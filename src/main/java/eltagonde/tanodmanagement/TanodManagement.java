@@ -10,6 +10,7 @@ import eltagonde.models.Tanod;
 import eltagonde.utils.Hibernate;
 import eltagonde.utils.TimeHelpers;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -252,100 +254,35 @@ public class TanodManagement extends javax.swing.JFrame {
         new Object [][] {},
         new String [] { "ID", "First Name", "Last Name", "Middle Name", "Created At"}
     );
+    
+    DefaultTableModel archivesTableModel = new DefaultTableModel(
+        new Object [][] {},
+        new String [] { "ID", "First Name", "Last Name", "Middle Name", "Created At"}
+    );
+
     for(Tanod tanod: tanods){
-        tableModel.addRow(new Object[]{
-            tanod.getId(), tanod.getFirstname(), tanod.getLastname(), tanod.getMiddlename(), tanod.getCreatedAt()
-        });
-    }
-    TanodsTable.setModel(tableModel);
-   }
-
-    /**
-     * Creates new form showLoginDialog
-     */
-    public static void showLoginDialog() {
-        // Set the Look and Feel to FlatLaf.MacLight
-        try {
-            IconFontSwing.register(FontAwesome.getIconFont());
-            UIManager.setLookAndFeel(new FlatMacLightLaf());
-        } catch (UnsupportedLookAndFeelException e) {
-            //e.printStackTrace();
+        if(tanod.is_archived()){
+            archivesTableModel.addRow(new Object[]{
+                tanod.getId(), tanod.getFirstname(), tanod.getLastname(), tanod.getMiddlename(), tanod.getCreatedAt()
+            });
         }
-
-        // Create the login frame
-        JFrame loginFrame = new JFrame("Admin Login");
-        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        // Create the login panel with a simple layout
-        JPanel loginPanel = new JPanel();
-        loginPanel.setLayout(new GridLayout(0, 1, 10, 1)); // Added spacing between components
-        
-        loginPanel.setBackground(new java.awt.Color(255, 255, 255));
-        
-        // Create labels, text fields, and button
-        JLabel userLabel = new JLabel("Username:");
-        JTextField userText = new JTextField(20);
-        JLabel passwordLabel = new JLabel("Password:");
-        JPasswordField passwordText = new JPasswordField(20);
-        
-        JButton loginButton = new JButton("Login");
-        loginButton.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
-        loginButton.setForeground(new java.awt.Color(255, 255, 255));
-        
-        loginButton.setIcon(IconFontSwing.buildIcon(
-                FontAwesome.SIGN_IN,
-                15,
-                java.awt.Color.WHITE
-        ));
-        
-        JLabel loginHeader = new JLabel("Admin Login", JLabel.CENTER);
-        
-        loginHeader.setFont(new java.awt.Font("Segoe UI", 1, 20));
-        loginHeader.setForeground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
-        
-        // Add components to the login panel
-        loginPanel.add(loginHeader);
-        loginPanel.add(userLabel);
-        loginPanel.add(userText);
-        loginPanel.add(passwordLabel);
-        loginPanel.add(passwordText);
-        loginPanel.add(new JLabel(""));
-        loginPanel.add(loginButton);
-
-        // Apply padding for better UI
-        loginPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        // Add login panel to the frame
-        loginFrame.add(loginPanel);
-        loginFrame.pack(); // Let the layout manager decide the size
-        loginFrame.setLocationRelativeTo(null); // Center the window
-
-        // Handle login action
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = userText.getText();
-                String password = new String(passwordText.getPassword());
-
-                if (AdminLogin.authenticate(username, password)) {
-                    // Successfully authenticated, launch the main application
-                    loginFrame.setVisible(false); // Close the login frame
-                    new TanodManagement().setVisible(true); // Launch the main app frame
-                } else {
-                    JOptionPane.showMessageDialog(loginFrame, "Invalid Username or Password.");
-                }
-            }
-        });
-
-        // Show the login frame
-        loginFrame.setVisible(true);
+        else{
+            tableModel.addRow(new Object[]{
+                tanod.getId(), tanod.getFirstname(), tanod.getLastname(), tanod.getMiddlename(), tanod.getCreatedAt()
+            });
+        }
     }
+
+    TanodsTable.setModel(tableModel);
+    ArchivesTable.setModel(archivesTableModel);
+   }
     
     /**
      * Creates new form TanodManagement
      */
     public TanodManagement() {
         FlatMacLightLaf.setup();
+        IconFontSwing.register(FontAwesome.getIconFont());
         initComponents();
     }
     
@@ -364,7 +301,7 @@ public class TanodManagement extends javax.swing.JFrame {
         tanod_last_name = new javax.swing.JTextField();
         tanod_middle_name = new javax.swing.JTextField();
         SaveTanod = new javax.swing.JButton();
-        DeleteTanod = new javax.swing.JButton();
+        ArchiveTanod = new javax.swing.JButton();
         tanod_first_name_label = new javax.swing.JLabel();
         tanod_last_name_label = new javax.swing.JLabel();
         tanod_middle_name_label = new javax.swing.JLabel();
@@ -382,18 +319,53 @@ public class TanodManagement extends javax.swing.JFrame {
         Shift_ends_at_mn = new javax.swing.JComboBox<>();
         Shift_ends_at_md = new javax.swing.JComboBox<>();
         Shift_day = new javax.swing.JComboBox<>();
+        RestorationDialog = new javax.swing.JFrame();
+        RestoreTanodDialog = new javax.swing.JPanel();
+        RestoreTanodBtn = new javax.swing.JButton();
+        DeleteTanod = new javax.swing.JButton();
+        tanod_first_name_label1 = new javax.swing.JLabel();
+        tanod_last_name_label1 = new javax.swing.JLabel();
+        tanod_middle_name_label1 = new javax.swing.JLabel();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
+        userText = new javax.swing.JTextField();
+        passwordText = new javax.swing.JPasswordField();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jButton10 = new javax.swing.JButton();
+        gradientBackgroundPanel1 = new eltagonde.utils.GradientBackgroundPanel();
+        ImageIcon logo = new ImageIcon("C:\\Users\\Nathaniel Kate Simon\\Downloads\\logo.png");
+        basicBackgroundPanel2 = new eltagonde.utils.BasicBackgroundPanel(logo.getImage());
+        jLabel37 = new javax.swing.JLabel();
+        ImageIcon bg = new ImageIcon("C:\\Users\\Nathaniel Kate Simon\\Downloads\\Background.jpg");
+        basicBackgroundPanel1 = new eltagonde.utils.BasicBackgroundPanel(bg.getImage());
         jPanel4 = new javax.swing.JPanel();
-        Header = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        Main = new javax.swing.JTabbedPane();
+        Main = new javax.swing.JPanel();
+        CardLayout = new javax.swing.JPanel();
         Dashboard = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jPanel16 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
         jLabel33 = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel38 = new javax.swing.JLabel();
+        ImageIcon banner = new ImageIcon("C:\\Users\\Nathaniel Kate Simon\\Downloads\\banner.jpg");
+        basicBackgroundPanel3 = new eltagonde.utils.BasicBackgroundPanel(banner.getImage());
         ClockInClockOut = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         ShiftsTable2 = new javax.swing.JTable();
@@ -421,9 +393,12 @@ public class TanodManagement extends javax.swing.JFrame {
         TanodSearchField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         TanodsTable = new javax.swing.JTable();
-        jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        ArchivesTable = new javax.swing.JTable();
         ShiftsManagement = new javax.swing.JPanel();
         ShiftsManagementHead = new javax.swing.JPanel();
         TanodSearchField2 = new javax.swing.JTextField();
@@ -488,6 +463,18 @@ public class TanodManagement extends javax.swing.JFrame {
         jLabel31 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        SidePanel = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        DashboardBtn = new javax.swing.JButton();
+        ClockInClockOutBtn = new javax.swing.JButton();
+        TanodsBtn = new javax.swing.JButton();
+        ShiftsBtn = new javax.swing.JButton();
+        PayrollBtn = new javax.swing.JButton();
+        SystemBtn = new javax.swing.JButton();
+        SystemBtn1 = new javax.swing.JButton();
+        jPanel12 = new javax.swing.JPanel();
 
         TanodForm.setTitle("New Tanod");
         TanodForm.setLocation(new java.awt.Point(0, 0));
@@ -535,19 +522,19 @@ public class TanodManagement extends javax.swing.JFrame {
             }
         });
 
-        DeleteTanod.setIcon(IconFontSwing.buildIcon(
-            FontAwesome.TRASH,
+        ArchiveTanod.setIcon(IconFontSwing.buildIcon(
+            FontAwesome.ARCHIVE,
             15,
             java.awt.Color.WHITE
         ));
-        DeleteTanod.setText("Delete");
-        DeleteTanod.setBackground(javax.swing.UIManager.getDefaults().getColor("Component.error.borderColor"));
-        DeleteTanod.setBorder(ClockIn.getBorder());
-        DeleteTanod.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        DeleteTanod.setForeground(new java.awt.Color(255, 255, 255));
-        DeleteTanod.addActionListener(new java.awt.event.ActionListener() {
+        ArchiveTanod.setText("Archive");
+        ArchiveTanod.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Yellow"));
+        ArchiveTanod.setBorder(ClockIn.getBorder());
+        ArchiveTanod.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ArchiveTanod.setForeground(new java.awt.Color(255, 255, 255));
+        ArchiveTanod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DeleteTanodActionPerformed(evt);
+                ArchiveTanodActionPerformed(evt);
             }
         });
 
@@ -575,7 +562,7 @@ public class TanodManagement extends javax.swing.JFrame {
                     .addComponent(tanod_middle_name)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TanodFormPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(DeleteTanod)
+                        .addComponent(ArchiveTanod)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SaveTanod)))
                 .addContainerGap())
@@ -598,7 +585,7 @@ public class TanodManagement extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(TanodFormPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SaveTanod)
-                    .addComponent(DeleteTanod))
+                    .addComponent(ArchiveTanod))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -641,7 +628,7 @@ public class TanodManagement extends javax.swing.JFrame {
         }
     });
 
-    DeleteShift.setIcon(DeleteTanod.getIcon());
+    DeleteShift.setIcon(ArchiveTanod.getIcon());
     DeleteShift.setText("Delete");
     DeleteShift.setBackground(javax.swing.UIManager.getDefaults().getColor("Component.error.borderColor"));
     DeleteShift.setBorder(ClockIn.getBorder());
@@ -746,54 +733,272 @@ public class TanodManagement extends javax.swing.JFrame {
 
     ShiftForm.getAccessibleContext().setAccessibleName("");
 
+    RestorationDialog.setTitle("New Tanod");
+    RestorationDialog.setLocation(new java.awt.Point(0, 0));
+    RestorationDialog.setMinimumSize(new java.awt.Dimension(300, 200));
+    RestorationDialog.setResizable(false);
+    RestorationDialog.setSize(new java.awt.Dimension(300, 290));
+    TanodForm.setLocationRelativeTo(null);
+
+    RestoreTanodDialog.setBackground(new java.awt.Color(255, 255, 255));
+    RestoreTanodDialog.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    RestoreTanodDialog.setName("asdasd"); // NOI18N
+    RestoreTanodDialog.setPreferredSize(new java.awt.Dimension(300, 221));
+
+    RestoreTanodBtn.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
+    RestoreTanodBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+    RestoreTanodBtn.setForeground(new java.awt.Color(255, 255, 255));
+    RestoreTanodBtn.setIcon(IconFontSwing.buildIcon(
+        FontAwesome.HISTORY,
+        15,
+        java.awt.Color.WHITE
+    ));
+    RestoreTanodBtn.setText("Restore");
+    RestoreTanodBtn.setBorder(ClockIn.getBorder());
+    RestoreTanodBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            RestoreTanodBtnActionPerformed(evt);
+        }
+    });
+
+    DeleteTanod.setBackground(javax.swing.UIManager.getDefaults().getColor("Component.error.borderColor"));
+    DeleteTanod.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+    DeleteTanod.setForeground(new java.awt.Color(255, 255, 255));
+    DeleteTanod.setIcon(IconFontSwing.buildIcon(
+        FontAwesome.TRASH,
+        15,
+        java.awt.Color.WHITE
+    ));
+    DeleteTanod.setText("Delete");
+    DeleteTanod.setBorder(ClockIn.getBorder());
+    DeleteTanod.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            DeleteTanodActionPerformed(evt);
+        }
+    });
+
+    tanod_first_name_label1.setText("Given name:");
+
+    tanod_last_name_label1.setText("Family name:");
+
+    tanod_middle_name_label1.setText("Middle name:");
+
+    jLabel39.setText("TanodGivenName");
+
+    jLabel40.setText("TanodFamilyName");
+
+    jLabel41.setText("TanodMiddlename");
+
+    javax.swing.GroupLayout RestoreTanodDialogLayout = new javax.swing.GroupLayout(RestoreTanodDialog);
+    RestoreTanodDialog.setLayout(RestoreTanodDialogLayout);
+    RestoreTanodDialogLayout.setHorizontalGroup(
+        RestoreTanodDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(RestoreTanodDialogLayout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(RestoreTanodDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RestoreTanodDialogLayout.createSequentialGroup()
+                    .addGap(0, 116, Short.MAX_VALUE)
+                    .addComponent(DeleteTanod)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(RestoreTanodBtn))
+                .addGroup(RestoreTanodDialogLayout.createSequentialGroup()
+                    .addGroup(RestoreTanodDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(tanod_first_name_label1)
+                        .addComponent(tanod_last_name_label1)
+                        .addComponent(tanod_middle_name_label1)
+                        .addComponent(jLabel39)
+                        .addComponent(jLabel40)
+                        .addComponent(jLabel41))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addContainerGap())
+    );
+    RestoreTanodDialogLayout.setVerticalGroup(
+        RestoreTanodDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(RestoreTanodDialogLayout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(tanod_first_name_label1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jLabel39)
+            .addGap(24, 24, 24)
+            .addComponent(tanod_last_name_label1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jLabel40)
+            .addGap(24, 24, 24)
+            .addComponent(tanod_middle_name_label1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jLabel41)
+            .addGap(24, 24, 24)
+            .addGroup(RestoreTanodDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(RestoreTanodBtn)
+                .addComponent(DeleteTanod))
+            .addContainerGap(86, Short.MAX_VALUE))
+    );
+
+    javax.swing.GroupLayout RestorationDialogLayout = new javax.swing.GroupLayout(RestorationDialog.getContentPane());
+    RestorationDialog.getContentPane().setLayout(RestorationDialogLayout);
+    RestorationDialogLayout.setHorizontalGroup(
+        RestorationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(RestoreTanodDialog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+    );
+    RestorationDialogLayout.setVerticalGroup(
+        RestorationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(RestoreTanodDialog, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+    );
+
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("TM");
+    getContentPane().setLayout(new java.awt.CardLayout());
 
-    jPanel4.setBackground(new java.awt.Color(220, 230, 244));
+    jPanel7.setOpaque(false);
 
-    Header.setBackground(jPanel4.getBackground());
-    Header.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    jPanel9.setAutoscrolls(true);
+    jPanel9.setOpaque(false);
+    jPanel9.setLayout(new java.awt.GridBagLayout());
 
-    jLabel1.setIcon(IconFontSwing.buildIcon(
-        FontAwesome.TACHOMETER,
-        24,
-        new java.awt.Color(0, 123, 254)
-    )
+    jPanel14.setAlignmentX(jPanel9.getWidth() / (float) 2.0);
+    jPanel14.setBackground(new java.awt.Color(255, 255, 255));
+    jPanel14.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 30, 20, 30));
+    jPanel14.setMaximumSize(new java.awt.Dimension(300, 300));
+    jPanel14.setPreferredSize(new java.awt.Dimension(300, 300));
+
+    jLabel34.setText("Login");
+    jLabel34.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+    jLabel34.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+    jLabel35.setText("Username");
+
+    jLabel36.setText("Password");
+
+    jButton10.setText("Login");
+    jButton10.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Green"));
+    jButton10.setBorder(javax.swing.BorderFactory.createCompoundBorder(ClockIn.getBorder(), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+    jButton10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+    jButton10.setForeground(new java.awt.Color(255, 255, 255));
+    jButton10.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton10ActionPerformed(evt);
+        }
+    });
+
+    javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+    jPanel14.setLayout(jPanel14Layout);
+    jPanel14Layout.setHorizontalGroup(
+        jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addGroup(jPanel14Layout.createSequentialGroup()
+            .addGap(83, 83, 83)
+            .addComponent(jLabel34)
+            .addContainerGap(93, Short.MAX_VALUE))
+        .addComponent(passwordText)
+        .addGroup(jPanel14Layout.createSequentialGroup()
+            .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel35)
+                .addComponent(jLabel36))
+            .addGap(0, 0, Short.MAX_VALUE))
+        .addGroup(jPanel14Layout.createSequentialGroup()
+            .addComponent(userText)
+            .addContainerGap())
     );
-    jLabel1.setText("TANOD MANAGEMENT");
-    jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-    jLabel1.setForeground(new java.awt.Color(0, 123, 254));
-
-    javax.swing.GroupLayout HeaderLayout = new javax.swing.GroupLayout(Header);
-    Header.setLayout(HeaderLayout);
-    HeaderLayout.setHorizontalGroup(
-        HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(HeaderLayout.createSequentialGroup()
+    jPanel14Layout.setVerticalGroup(
+        jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel14Layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jLabel1)
+            .addComponent(jLabel34)
+            .addGap(23, 23, 23)
+            .addComponent(jLabel35)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(userText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(12, 12, 12)
+            .addComponent(jLabel36)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(33, 33, 33)
+            .addComponent(jButton10)
+            .addContainerGap(23, Short.MAX_VALUE))
+    );
+
+    jPanel9.add(jPanel14, new java.awt.GridBagConstraints());
+
+    basicBackgroundPanel2.setBackground(new java.awt.Color(4, 34, 90));
+    basicBackgroundPanel2.setMaximumSize(new java.awt.Dimension(50, 50));
+    basicBackgroundPanel2.setPreferredSize(new java.awt.Dimension(50, 50));
+
+    jLabel37.setText("Brgy. Kadaohan Tanod Management System");
+    jLabel37.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+    jLabel37.setForeground(new java.awt.Color(255, 255, 255));
+
+    javax.swing.GroupLayout gradientBackgroundPanel1Layout = new javax.swing.GroupLayout(gradientBackgroundPanel1);
+    gradientBackgroundPanel1.setLayout(gradientBackgroundPanel1Layout);
+    gradientBackgroundPanel1Layout.setHorizontalGroup(
+        gradientBackgroundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(gradientBackgroundPanel1Layout.createSequentialGroup()
+            .addGap(26, 26, 26)
+            .addComponent(basicBackgroundPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(18, 18, 18)
+            .addComponent(jLabel37)
+            .addContainerGap(407, Short.MAX_VALUE))
+    );
+    gradientBackgroundPanel1Layout.setVerticalGroup(
+        gradientBackgroundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(gradientBackgroundPanel1Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(gradientBackgroundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(basicBackgroundPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jLabel37, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
-    HeaderLayout.setVerticalGroup(
-        HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderLayout.createSequentialGroup()
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel1)
-            .addGap(36, 36, 36))
+
+    javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+    jPanel7.setLayout(jPanel7Layout);
+    jPanel7Layout.setHorizontalGroup(
+        jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(gradientBackgroundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1217, Short.MAX_VALUE)
+    );
+    jPanel7Layout.setVerticalGroup(
+        jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel7Layout.createSequentialGroup()
+            .addComponent(gradientBackgroundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE))
     );
 
-    Main.setTabPlacement(javax.swing.JTabbedPane.LEFT);
-    Main.setBackground(new java.awt.Color(255, 255, 255));
-    Main.setFocusable(false);
-    Main.setOpaque(true);
+    basicBackgroundPanel1.setLayout(new javax.swing.OverlayLayout(basicBackgroundPanel1));
+
+    javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+    jPanel6.setLayout(jPanel6Layout);
+    jPanel6Layout.setHorizontalGroup(
+        jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(basicBackgroundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1217, Short.MAX_VALUE))
+    );
+    jPanel6Layout.setVerticalGroup(
+        jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(basicBackgroundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE))
+    );
+
+    getContentPane().add(jPanel6, "AuthenticationCard");
+
+    jPanel4.setBackground(ClockInClockOut.getBackground());
+
+    Main.setBackground(new java.awt.Color(255, 153, 153));
+    Main.setMaximumSize(new java.awt.Dimension(880, 32767));
+    Main.setPreferredSize(new java.awt.Dimension(880, 524));
+
+    CardLayout.setLayout(new java.awt.CardLayout());
 
     Dashboard.setBackground(ClockInClockOut.getBackground());
 
-    jPanel5.setBackground(Dashboard.getBackground());
-    jPanel5.setLayout(new java.awt.GridLayout(2, 3, 10, 10));
+    jScrollPane6.setBorder(null);
+    jScrollPane6.setPreferredSize(new java.awt.Dimension(880, 880));
 
-    jButton5.setBackground(new java.awt.Color(1, 188, 212));
-    jButton5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-    jButton5.setForeground(new java.awt.Color(255, 255, 255));
+    jPanel5.setBackground(Dashboard.getBackground());
+    jPanel5.setMinimumSize(new java.awt.Dimension(410, 74));
+    jPanel5.setLayout(new java.awt.GridLayout(2, 4, 10, 10));
+
     jButton5.setIcon(IconFontSwing.buildIcon(
         FontAwesome.CLOCK_O,
         36,
@@ -801,7 +1006,10 @@ public class TanodManagement extends javax.swing.JFrame {
     )
     );
     jButton5.setText("Clock In/Out");
+    jButton5.setBackground(new java.awt.Color(32, 40, 57));
     jButton5.setBorder(null);
+    jButton5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+    jButton5.setForeground(new java.awt.Color(255, 255, 255));
     jButton5.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jButton5ActionPerformed(evt);
@@ -809,9 +1017,6 @@ public class TanodManagement extends javax.swing.JFrame {
     });
     jPanel5.add(jButton5);
 
-    jButton6.setBackground(new java.awt.Color(141, 195, 74));
-    jButton6.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-    jButton6.setForeground(new java.awt.Color(255, 255, 255));
     jButton6.setIcon(IconFontSwing.buildIcon(
         FontAwesome.USERS,
         36,
@@ -819,7 +1024,10 @@ public class TanodManagement extends javax.swing.JFrame {
     )
     );
     jButton6.setText("Tanods");
+    jButton6.setBackground(new java.awt.Color(246, 95, 81));
     jButton6.setBorder(null);
+    jButton6.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+    jButton6.setForeground(new java.awt.Color(255, 255, 255));
     jButton6.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jButton6ActionPerformed(evt);
@@ -827,9 +1035,6 @@ public class TanodManagement extends javax.swing.JFrame {
     });
     jPanel5.add(jButton6);
 
-    jButton7.setBackground(new java.awt.Color(29, 138, 207));
-    jButton7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-    jButton7.setForeground(new java.awt.Color(255, 255, 255));
     jButton7.setIcon(IconFontSwing.buildIcon(
         FontAwesome.CALENDAR,
         36,
@@ -837,7 +1042,10 @@ public class TanodManagement extends javax.swing.JFrame {
     )
     );
     jButton7.setText("Shifts");
+    jButton7.setBackground(new java.awt.Color(255, 156, 59));
     jButton7.setBorder(null);
+    jButton7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+    jButton7.setForeground(new java.awt.Color(255, 255, 255));
     jButton7.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jButton7ActionPerformed(evt);
@@ -845,9 +1053,6 @@ public class TanodManagement extends javax.swing.JFrame {
     });
     jPanel5.add(jButton7);
 
-    jButton8.setBackground(new java.awt.Color(166, 105, 221));
-    jButton8.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-    jButton8.setForeground(new java.awt.Color(255, 255, 255));
     jButton8.setIcon(IconFontSwing.buildIcon(
         FontAwesome.WPFORMS,
         36,
@@ -855,7 +1060,10 @@ public class TanodManagement extends javax.swing.JFrame {
     )
     );
     jButton8.setText("Payroll");
+    jButton8.setBackground(new java.awt.Color(3, 151, 128));
     jButton8.setBorder(null);
+    jButton8.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+    jButton8.setForeground(new java.awt.Color(255, 255, 255));
     jButton8.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jButton8ActionPerformed(evt);
@@ -863,9 +1071,6 @@ public class TanodManagement extends javax.swing.JFrame {
     });
     jPanel5.add(jButton8);
 
-    jButton9.setBackground(new java.awt.Color(255, 199, 0));
-    jButton9.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-    jButton9.setForeground(new java.awt.Color(255, 255, 255));
     jButton9.setIcon(IconFontSwing.buildIcon(
         FontAwesome.COGS,
         36,
@@ -873,7 +1078,10 @@ public class TanodManagement extends javax.swing.JFrame {
     )
     );
     jButton9.setText("System");
+    jButton9.setBackground(new java.awt.Color(29, 138, 207));
     jButton9.setBorder(null);
+    jButton9.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+    jButton9.setForeground(new java.awt.Color(255, 255, 255));
     jButton9.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jButton9ActionPerformed(evt);
@@ -881,32 +1089,138 @@ public class TanodManagement extends javax.swing.JFrame {
     });
     jPanel5.add(jButton9);
 
+    jPanel10.setOpaque(false);
+
+    javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+    jPanel10.setLayout(jPanel10Layout);
+    jPanel10Layout.setHorizontalGroup(
+        jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 240, Short.MAX_VALUE)
+    );
+    jPanel10Layout.setVerticalGroup(
+        jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 118, Short.MAX_VALUE)
+    );
+
+    jPanel5.add(jPanel10);
+
+    jPanel8.setOpaque(false);
+
+    javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+    jPanel8.setLayout(jPanel8Layout);
+    jPanel8Layout.setHorizontalGroup(
+        jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 240, Short.MAX_VALUE)
+    );
+    jPanel8Layout.setVerticalGroup(
+        jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 118, Short.MAX_VALUE)
+    );
+
+    jPanel5.add(jPanel8);
+
+    jLabel33.setText("DASHBOARD");
     jLabel33.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-    jLabel33.setForeground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
-    jLabel33.setText("WELCOME!");
+
+    jPanel15.setOpaque(false);
+
+    jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    jScrollPane5.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    jScrollPane5.setBorder(null);
+    jScrollPane5.setOpaque(false);
+
+    jTextArea1.setEditable(false);
+    jTextArea1.setColumns(20);
+    jTextArea1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    jTextArea1.setLineWrap(true);
+    jTextArea1.setRows(5);
+    jTextArea1.setText("Empowering Brgy. Tanods with a digital system fosters a safer, more organized, and resilient community by streamlining operations and enhancing transparency in barangay governance.");
+    jTextArea1.setWrapStyleWord(true);
+    jTextArea1.setBorder(null);
+    jTextArea1.setFocusable(false);
+    jTextArea1.setOpaque(false);
+    jScrollPane5.setViewportView(jTextArea1);
+
+    jLabel38.setText("MISSION STATEMENT");
+    jLabel38.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+
+    basicBackgroundPanel3.setEnabled(false);
+    basicBackgroundPanel3.setMaximumSize(new java.awt.Dimension(880, 660));
+    basicBackgroundPanel3.setMinimumSize(new java.awt.Dimension(880, 660));
+    basicBackgroundPanel3.setPreferredSize(new java.awt.Dimension(880, 660));
+    basicBackgroundPanel3.setRequestFocusEnabled(false);
+
+    javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+    jPanel15.setLayout(jPanel15Layout);
+    jPanel15Layout.setHorizontalGroup(
+        jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel15Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane5)
+                .addGroup(jPanel15Layout.createSequentialGroup()
+                    .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(basicBackgroundPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addContainerGap())
+    );
+    jPanel15Layout.setVerticalGroup(
+        jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel15Layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jLabel38)
+            .addGap(5, 5, 5)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(basicBackgroundPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+
+    javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+    jPanel16.setLayout(jPanel16Layout);
+    jPanel16Layout.setHorizontalGroup(
+        jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel16Layout.createSequentialGroup()
+            .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 768, Short.MAX_VALUE))
+        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
+                .addGap(2, 2, 2)
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 993, Short.MAX_VALUE))
+                .addContainerGap()))
+    );
+    jPanel16Layout.setVerticalGroup(
+        jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel16Layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jLabel33)
+            .addContainerGap(791, Short.MAX_VALUE))
+        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel16Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)))
+    );
+
+    jScrollPane6.setViewportView(jPanel16);
 
     javax.swing.GroupLayout DashboardLayout = new javax.swing.GroupLayout(Dashboard);
     Dashboard.setLayout(DashboardLayout);
     DashboardLayout.setHorizontalGroup(
         DashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(DashboardLayout.createSequentialGroup()
-            .addContainerGap()
-            .addGroup(DashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
-                .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addContainerGap())
+        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1011, Short.MAX_VALUE)
     );
     DashboardLayout.setVerticalGroup(
         DashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(DashboardLayout.createSequentialGroup()
-            .addContainerGap()
-            .addComponent(jLabel33)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(190, Short.MAX_VALUE))
+        .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
     );
 
-    Main.addTab("Dashboard", Dashboard);
+    CardLayout.add(Dashboard, "DashboardCard");
 
     ClockInClockOut.setBackground(new java.awt.Color(236, 236, 236));
 
@@ -997,7 +1311,7 @@ public class TanodManagement extends javax.swing.JFrame {
                     .addGroup(ShiftsManagementContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel5)
                         .addComponent(calendarPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(0, 9, Short.MAX_VALUE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
             .addContainerGap())
         .addGroup(ShiftsManagementContent2Layout.createSequentialGroup()
             .addGap(14, 14, 14)
@@ -1134,12 +1448,12 @@ public class TanodManagement extends javax.swing.JFrame {
             .addGroup(ClockInClockOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(ClockInClockOutLayout.createSequentialGroup()
                     .addComponent(jLabel6)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 295, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ClockIn)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(ClockOut))
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane4))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE))
             .addContainerGap())
     );
     ClockInClockOutLayout.setVerticalGroup(
@@ -1155,13 +1469,13 @@ public class TanodManagement extends javax.swing.JFrame {
                             .addComponent(ClockOut))
                         .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addContainerGap())
     );
 
-    Main.addTab("Clock In/Out", ClockInClockOut);
+    CardLayout.add(ClockInClockOut, "ClockInClockOutCard");
 
     TanodManagement.setBackground(new java.awt.Color(255, 255, 255));
     TanodManagement.setBorder(javax.swing.BorderFactory.createLineBorder(ClockInClockOut.getBackground(), 10));
@@ -1207,7 +1521,7 @@ public class TanodManagement extends javax.swing.JFrame {
             .addComponent(jLabel2)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(TanodSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 578, Short.MAX_VALUE)
             .addComponent(jButton1)
             .addContainerGap())
     );
@@ -1246,6 +1560,30 @@ public class TanodManagement extends javax.swing.JFrame {
     });
     jScrollPane1.setViewportView(TanodsTable);
 
+    jTabbedPane1.addTab("Tanods", jScrollPane1);
+
+    ArchivesTable.setDefaultEditor(Object.class, null);
+    DefaultTableModel archivesTableModel = new DefaultTableModel(
+        new Object [][] {},
+        new String [] { "ID", "First Name", "Last Name", "Middle Name", "Created At"}
+    );
+    ArchivesTable.setModel(archivesTableModel);
+    fillTanodsTable();
+    ArchivesTable.setFocusable(false);
+    ArchivesTable.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusGained(java.awt.event.FocusEvent evt) {
+            ArchivesTableFocusGained(evt);
+        }
+    });
+    ArchivesTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            ArchivesTableMouseClicked(evt);
+        }
+    });
+    jScrollPane7.setViewportView(ArchivesTable);
+
+    jTabbedPane1.addTab("Archive", jScrollPane7);
+
     javax.swing.GroupLayout TanodManagementLayout = new javax.swing.GroupLayout(TanodManagement);
     TanodManagement.setLayout(TanodManagementLayout);
     TanodManagementLayout.setHorizontalGroup(
@@ -1253,8 +1591,8 @@ public class TanodManagement extends javax.swing.JFrame {
         .addGroup(TanodManagementLayout.createSequentialGroup()
             .addContainerGap()
             .addGroup(TanodManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jTabbedPane1)
                 .addComponent(TanodManagementHead, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addComponent(jSeparator1))
             .addContainerGap())
     );
@@ -1266,11 +1604,11 @@ public class TanodManagement extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
             .addContainerGap())
     );
 
-    Main.addTab("Tanod Management", TanodManagement);
+    CardLayout.add(TanodManagement, "TanodManagementCard");
 
     ShiftsManagement.setBackground(ClockInClockOut.getBackground());
 
@@ -1405,7 +1743,7 @@ public class TanodManagement extends javax.swing.JFrame {
                                 .addComponent(SMLast_name)
                                 .addComponent(SMMiddle_name)
                                 .addComponent(SMCreated_at))))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGap(537, 890, Short.MAX_VALUE))))
     );
     ShiftsManagementContentLayout.setVerticalGroup(
         ShiftsManagementContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1431,7 +1769,7 @@ public class TanodManagement extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(AddShift)
                     .addGap(0, 0, Short.MAX_VALUE))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
             .addContainerGap())
     );
 
@@ -1456,7 +1794,7 @@ public class TanodManagement extends javax.swing.JFrame {
             .addContainerGap())
     );
 
-    Main.addTab("Shifts Management", ShiftsManagement);
+    CardLayout.add(ShiftsManagement, "ShiftsManagementCard");
 
     Payroll.setBackground(ClockInClockOut.getBackground());
 
@@ -1569,7 +1907,7 @@ public class TanodManagement extends javax.swing.JFrame {
         .addGroup(jPanel2Layout.createSequentialGroup()
             .addContainerGap()
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
                 .addComponent(jSeparator6)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1790,11 +2128,11 @@ public class TanodManagement extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(PayrollLayout.createSequentialGroup()
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 144, Short.MAX_VALUE)))
+                    .addGap(0, 313, Short.MAX_VALUE)))
             .addContainerGap())
     );
 
-    Main.addTab("Payroll", Payroll);
+    CardLayout.add(Payroll, "PayrollCard");
 
     System.setBackground(ClockInClockOut.getBackground());
 
@@ -1865,43 +2203,241 @@ public class TanodManagement extends javax.swing.JFrame {
         .addGroup(SystemLayout.createSequentialGroup()
             .addContainerGap()
             .addComponent(UpdateAdminCredentials, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(455, Short.MAX_VALUE))
+            .addContainerGap(636, Short.MAX_VALUE))
     );
     SystemLayout.setVerticalGroup(
         SystemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(SystemLayout.createSequentialGroup()
             .addContainerGap()
             .addComponent(UpdateAdminCredentials, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(240, Short.MAX_VALUE))
+            .addContainerGap(409, Short.MAX_VALUE))
     );
 
-    Main.addTab("System", System);
+    CardLayout.add(System, "SystemCard");
+
+    javax.swing.GroupLayout MainLayout = new javax.swing.GroupLayout(Main);
+    Main.setLayout(MainLayout);
+    MainLayout.setHorizontalGroup(
+        MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 1011, Short.MAX_VALUE)
+        .addGroup(MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(CardLayout, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE))
+    );
+    MainLayout.setVerticalGroup(
+        MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 640, Short.MAX_VALUE)
+        .addGroup(MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(CardLayout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE))
+    );
+
+    SidePanel.setBackground(new java.awt.Color(32, 40, 57));
+    SidePanel.setMaximumSize(new java.awt.Dimension(200, 32767));
+    SidePanel.setPreferredSize(new java.awt.Dimension(200, 0));
+    SidePanel.setOpaque(false);
+    SidePanel.setLayout(new java.awt.GridLayout(2, 0));
+
+    jPanel11.setBackground(new java.awt.Color(32, 40, 57));
+    jPanel11.setLayout(new java.awt.GridLayout(8, 0));
+
+    jPanel13.setBackground(new java.awt.Color(246, 95, 81));
+    jPanel13.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
+
+    jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    jLabel1.setText("Brgy. Tanod Management System");
+    jLabel1.setFont(new java.awt.Font("Gill Sans Ultra Bold Condensed", 0, 12)); // NOI18N
+    jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+
+    javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+    jPanel13.setLayout(jPanel13Layout);
+    jPanel13Layout.setHorizontalGroup(
+        jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+    );
+    jPanel13Layout.setVerticalGroup(
+        jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+    );
+
+    jPanel11.add(jPanel13);
+
+    DashboardBtn.setBackground(SidePanel.getBackground());
+    DashboardBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    DashboardBtn.setForeground(new java.awt.Color(255, 255, 255));
+    DashboardBtn.setIcon(IconFontSwing.buildIcon(
+        FontAwesome.TACHOMETER,
+        14,
+        java.awt.Color.WHITE
+    )
+    );
+    DashboardBtn.setText("Dashboard");
+    DashboardBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 20, 10, 20));
+    DashboardBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+    DashboardBtn.setIconTextGap(15);
+    DashboardBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            DashboardBtnActionPerformed(evt);
+        }
+    });
+    jPanel11.add(DashboardBtn);
+
+    ClockInClockOutBtn.setBackground(DashboardBtn.getBackground());
+    ClockInClockOutBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    ClockInClockOutBtn.setForeground(DashboardBtn.getForeground());
+    ClockInClockOutBtn.setIcon(IconFontSwing.buildIcon(
+        FontAwesome.CLOCK_O,
+        14,
+        java.awt.Color.WHITE
+    ));
+    ClockInClockOutBtn.setText("Clock In/Out");
+    ClockInClockOutBtn.setBorder(DashboardBtn.getBorder());
+    ClockInClockOutBtn.setHorizontalAlignment(DashboardBtn.getHorizontalAlignment());
+    ClockInClockOutBtn.setHorizontalTextPosition(DashboardBtn.getHorizontalTextPosition());
+    ClockInClockOutBtn.setIconTextGap(DashboardBtn.getIconTextGap());
+    ClockInClockOutBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            ClockInClockOutBtnActionPerformed(evt);
+        }
+    });
+    jPanel11.add(ClockInClockOutBtn);
+
+    TanodsBtn.setBackground(DashboardBtn.getBackground());
+    TanodsBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    TanodsBtn.setForeground(DashboardBtn.getForeground());
+    TanodsBtn.setIcon(IconFontSwing.buildIcon(
+        FontAwesome.USERS,
+        14,
+        java.awt.Color.WHITE
+    )
+    );
+    TanodsBtn.setText("Tanods");
+    TanodsBtn.setBorder(DashboardBtn.getBorder());
+    TanodsBtn.setHorizontalAlignment(DashboardBtn.getHorizontalAlignment());
+    TanodsBtn.setHorizontalTextPosition(DashboardBtn.getHorizontalTextPosition());
+    TanodsBtn.setIconTextGap(DashboardBtn.getIconTextGap());
+    TanodsBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            TanodsBtnActionPerformed(evt);
+        }
+    });
+    jPanel11.add(TanodsBtn);
+
+    ShiftsBtn.setBackground(DashboardBtn.getBackground());
+    ShiftsBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    ShiftsBtn.setForeground(DashboardBtn.getForeground());
+    ShiftsBtn.setIcon(IconFontSwing.buildIcon(
+        FontAwesome.CALENDAR,
+        14,
+        java.awt.Color.WHITE
+    )
+    );
+    ShiftsBtn.setText("Shifts");
+    ShiftsBtn.setBorder(DashboardBtn.getBorder());
+    ShiftsBtn.setHorizontalAlignment(DashboardBtn.getHorizontalAlignment());
+    ShiftsBtn.setHorizontalTextPosition(DashboardBtn.getHorizontalTextPosition());
+    ShiftsBtn.setIconTextGap(DashboardBtn.getIconTextGap());
+    ShiftsBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            ShiftsBtnActionPerformed(evt);
+        }
+    });
+    jPanel11.add(ShiftsBtn);
+
+    PayrollBtn.setBackground(DashboardBtn.getBackground());
+    PayrollBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    PayrollBtn.setForeground(DashboardBtn.getForeground());
+    PayrollBtn.setIcon(IconFontSwing.buildIcon(
+        FontAwesome.WPFORMS,
+        14,
+        java.awt.Color.WHITE
+    )
+    );
+    PayrollBtn.setText("Payroll");
+    PayrollBtn.setBorder(DashboardBtn.getBorder());
+    PayrollBtn.setHorizontalAlignment(DashboardBtn.getHorizontalAlignment());
+    PayrollBtn.setHorizontalTextPosition(DashboardBtn.getHorizontalTextPosition());
+    PayrollBtn.setIconTextGap(DashboardBtn.getIconTextGap());
+    PayrollBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            PayrollBtnActionPerformed(evt);
+        }
+    });
+    jPanel11.add(PayrollBtn);
+
+    SystemBtn.setBackground(DashboardBtn.getBackground());
+    SystemBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    SystemBtn.setForeground(DashboardBtn.getForeground());
+    SystemBtn.setIcon(IconFontSwing.buildIcon(
+        FontAwesome.COGS,
+        14,
+        java.awt.Color.WHITE
+    )
+    );
+    SystemBtn.setText("System");
+    SystemBtn.setBorder(DashboardBtn.getBorder());
+    SystemBtn.setHorizontalAlignment(DashboardBtn.getHorizontalAlignment());
+    SystemBtn.setHorizontalTextPosition(DashboardBtn.getHorizontalTextPosition());
+    SystemBtn.setIconTextGap(DashboardBtn.getIconTextGap());
+    SystemBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            SystemBtnActionPerformed(evt);
+        }
+    });
+    jPanel11.add(SystemBtn);
+
+    SystemBtn1.setBackground(DashboardBtn.getBackground());
+    SystemBtn1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    SystemBtn1.setForeground(DashboardBtn.getForeground());
+    SystemBtn1.setIcon(IconFontSwing.buildIcon(
+        FontAwesome.SIGN_OUT,
+        14,
+        java.awt.Color.WHITE
+    )
+    );
+    SystemBtn1.setText("Sign Out");
+    SystemBtn1.setBorder(DashboardBtn.getBorder());
+    SystemBtn1.setHorizontalAlignment(DashboardBtn.getHorizontalAlignment());
+    SystemBtn1.setHorizontalTextPosition(DashboardBtn.getHorizontalTextPosition());
+    SystemBtn1.setIconTextGap(DashboardBtn.getIconTextGap());
+    SystemBtn1.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            SystemBtn1ActionPerformed(evt);
+        }
+    });
+    jPanel11.add(SystemBtn1);
+
+    SidePanel.add(jPanel11);
+
+    jPanel12.setBackground(new java.awt.Color(32, 40, 57));
+
+    javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+    jPanel12.setLayout(jPanel12Layout);
+    jPanel12Layout.setHorizontalGroup(
+        jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 200, Short.MAX_VALUE)
+    );
+    jPanel12Layout.setVerticalGroup(
+        jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 0, Short.MAX_VALUE)
+    );
+
+    SidePanel.add(jPanel12);
 
     javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
     jPanel4.setLayout(jPanel4Layout);
     jPanel4Layout.setHorizontalGroup(
         jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(Main)
-        .addComponent(Header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+            .addComponent(SidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(Main, javax.swing.GroupLayout.DEFAULT_SIZE, 1011, Short.MAX_VALUE))
     );
     jPanel4Layout.setVerticalGroup(
         jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(jPanel4Layout.createSequentialGroup()
-            .addComponent(Header, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(Main))
+        .addComponent(Main, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+        .addComponent(SidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
     );
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
-    layout.setHorizontalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-    );
-    layout.setVerticalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-    );
+    getContentPane().add(jPanel4, "AuthenticatedCard");
 
     pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1912,18 +2448,10 @@ public class TanodManagement extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         appState.remove("editingTanodId");
         tanod_first_name.setText(""); tanod_last_name.setText(""); tanod_middle_name.setText("");
-        DeleteTanod.setVisible(false);
+        ArchiveTanod.setVisible(false);
         TanodForm.setTitle("New Tanod");
         TanodForm.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void tanod_first_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tanod_first_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tanod_first_nameActionPerformed
-
-    private void tanod_last_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tanod_last_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tanod_last_nameActionPerformed
 
     private void SaveTanodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveTanodActionPerformed
         // TODO add your handling code here:
@@ -1969,12 +2497,13 @@ public class TanodManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tanod_middle_nameActionPerformed
 
-    private void DeleteTanodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteTanodActionPerformed
+    private void ArchiveTanodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchiveTanodActionPerformed
         // TODO add your handling code here:
         try(Session session = sessionFactory.openSession()){
             session.beginTransaction();
             Tanod tanod = session.find(Tanod.class, appState.get("editingTanodId"));
-            session.remove(tanod);
+            tanod.archive();
+            session.merge(tanod);
             session.getTransaction().commit();
             session.close();
         }
@@ -2006,7 +2535,7 @@ public class TanodManagement extends javax.swing.JFrame {
         
         tanod_first_name.setText(""); tanod_last_name.setText(""); tanod_middle_name.setText("");
         TanodForm.setVisible(false);
-    }//GEN-LAST:event_DeleteTanodActionPerformed
+    }//GEN-LAST:event_ArchiveTanodActionPerformed
 
     private void TanodSearchFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanodSearchFieldKeyPressed
         // TODO add your handling code here:
@@ -2063,24 +2592,35 @@ public class TanodManagement extends javax.swing.JFrame {
     private void ShiftsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ShiftsTableMouseClicked
         // TODO add your handling code here:
         int row = ShiftsTable.getSelectedRow();
-        
+        boolean is_archived = false;
         appState.put("editingShiftId", ShiftsTable.getValueAt(row, 0));
         
-        Shift_day.setSelectedItem(ShiftsTable.getValueAt(row, 1));
+        try(Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            
+            Shift shift = session.find(Shift.class, appState.get("editingShiftId"));
+            is_archived = shift.getTanod().is_archived();
         
-        String[] starts_at = TimeHelpers.splitTime(ShiftsTable.getValueAt(row, 2).toString());
-        Shift_starts_at_hr.setSelectedItem(starts_at[0]);
-        Shift_starts_at_mn.setSelectedItem(starts_at[1]);
-        Shift_starts_at_md.setSelectedItem(starts_at[2]);
+            session.close();
+        }
         
-        String[] ends_at = TimeHelpers.splitTime(ShiftsTable.getValueAt(row, 3).toString());
-        Shift_ends_at_hr.setSelectedItem(ends_at[0]);
-        Shift_ends_at_mn.setSelectedItem(ends_at[1]);
-        Shift_ends_at_md.setSelectedItem(ends_at[2]);
+        if(!is_archived){
+            Shift_day.setSelectedItem(ShiftsTable.getValueAt(row, 1));
 
-        ShiftForm.setTitle("Update Shift");
-        ShiftForm.setVisible(true);
-        DeleteShift.setVisible(true);
+            String[] starts_at = TimeHelpers.splitTime(ShiftsTable.getValueAt(row, 2).toString());
+            Shift_starts_at_hr.setSelectedItem(starts_at[0]);
+            Shift_starts_at_mn.setSelectedItem(starts_at[1]);
+            Shift_starts_at_md.setSelectedItem(starts_at[2]);
+
+            String[] ends_at = TimeHelpers.splitTime(ShiftsTable.getValueAt(row, 3).toString());
+            Shift_ends_at_hr.setSelectedItem(ends_at[0]);
+            Shift_ends_at_mn.setSelectedItem(ends_at[1]);
+            Shift_ends_at_md.setSelectedItem(ends_at[2]);
+
+            ShiftForm.setTitle("Update Shift");
+            ShiftForm.setVisible(true);
+            DeleteShift.setVisible(true);
+        }
     }//GEN-LAST:event_ShiftsTableMouseClicked
 
     private void DeleteShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteShiftActionPerformed
@@ -2115,7 +2655,7 @@ public class TanodManagement extends javax.swing.JFrame {
         tanod_middle_name.setText((String) TanodsTable.getValueAt(row, 3));
         TanodForm.setTitle("Update Tanod");
         TanodForm.setVisible(true);
-        DeleteTanod.setVisible(true);
+        ArchiveTanod.setVisible(true);
     }//GEN-LAST:event_TanodsTableMouseClicked
 
     private void TanodsTableFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TanodsTableFocusGained
@@ -2139,16 +2679,25 @@ public class TanodManagement extends javax.swing.JFrame {
                 SMLast_name.setText("Last Name: " + tanod.getLastname());
                 SMMiddle_name.setText("Middle Name: " + tanod.getMiddlename());
                 SMCreated_at.setText("Created At: " + tanod.getCreatedAt());
-                UpdateTanod.setEnabled(true);
+                
+                if(tanod.is_archived()){
+                    UpdateTanod.setEnabled(false);
+                    AddShift.setEnabled(false);
+                }
+                else{
+                    UpdateTanod.setEnabled(true);
+                    AddShift.setEnabled(true);    
+                }
+                
                 DayOfWeekFilter.setEnabled(true);
-                AddShift.setEnabled(true);
+
 
                 // Fill TanodForm
                 tanod_first_name.setText(tanod.getFirstname());
                 tanod_last_name.setText(tanod.getLastname());
                 tanod_middle_name.setText(tanod.getMiddlename());
                 TanodForm.setTitle("Update Tanod");
-                DeleteTanod.setVisible(false);
+                ArchiveTanod.setVisible(false);
                 appState.put("editingTanodId", tanod.getId());
 
                 fillShiftsTable();
@@ -2400,28 +2949,186 @@ public class TanodManagement extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        Main.setSelectedComponent(ClockInClockOut);
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "ClockInClockOutCard");
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        Main.setSelectedComponent(TanodManagement);
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "TanodManagementCard");
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        Main.setSelectedComponent(ShiftsManagement);
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "ShiftsManagementCard");
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        Main.setSelectedComponent(Payroll);
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "PayrollCard");
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-        Main.setSelectedComponent(System);
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "SystemCard");
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        String username = userText.getText();
+        String password = new String(passwordText.getPassword());
+
+        if (AdminLogin.authenticate(username, password)) {
+            // Successfully authenticated, launch the main application
+            jPanel6.setVisible(false);
+            jPanel4.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(TanodManagement, "Invalid Username or Password.");
+        }
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void DashboardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DashboardBtnActionPerformed
+        // TODO add your handling code here:
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "DashboardCard");
+    }//GEN-LAST:event_DashboardBtnActionPerformed
+
+    private void ShiftsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShiftsBtnActionPerformed
+        // TODO add your handling code here:
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "ShiftsManagementCard");
+    }//GEN-LAST:event_ShiftsBtnActionPerformed
+
+    private void ClockInClockOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClockInClockOutBtnActionPerformed
+        // TODO add your handling code here:
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "ClockInClockOutCard");
+    }//GEN-LAST:event_ClockInClockOutBtnActionPerformed
+
+    private void TanodsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TanodsBtnActionPerformed
+        // TODO add your handling code here:
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "TanodManagementCard");
+    }//GEN-LAST:event_TanodsBtnActionPerformed
+
+    private void PayrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PayrollBtnActionPerformed
+        // TODO add your handling code here:
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "PayrollCard");
+    }//GEN-LAST:event_PayrollBtnActionPerformed
+
+    private void SystemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SystemBtnActionPerformed
+        // TODO add your handling code here:
+        ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "SystemCard");
+    }//GEN-LAST:event_SystemBtnActionPerformed
+
+    private void SystemBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SystemBtn1ActionPerformed
+        // TODO add your handling code here:
+        jPanel4.setVisible(false);
+        jPanel6.setVisible(true);
+    }//GEN-LAST:event_SystemBtn1ActionPerformed
+
+    private void ArchivesTableFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ArchivesTableFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ArchivesTableFocusGained
+
+    private void ArchivesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ArchivesTableMouseClicked
+        // TODO add your handling code here:
+        int row = ArchivesTable.getSelectedRow();
+
+        appState.put("editingTanodId", ArchivesTable.getValueAt(row, 0));
+
+        jLabel39.setText((String) ArchivesTable.getValueAt(row, 1));
+        jLabel40.setText((String) ArchivesTable.getValueAt(row, 2));
+        jLabel41.setText((String) ArchivesTable.getValueAt(row, 3));
+        RestorationDialog.setTitle("Restore/Delete Tanod");
+        RestorationDialog.setVisible(true);
+        ArchiveTanod.setVisible(true);
+    }//GEN-LAST:event_ArchivesTableMouseClicked
+
+    private void DeleteTanodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteTanodActionPerformed
+        // TODO add your handling code here:
+        try(Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            Tanod tanod = session.find(Tanod.class, appState.get("editingTanodId"));
+            session.remove(tanod);
+            session.getTransaction().commit();
+            session.close();
+        }
+        
+        // Reset all dependent components
+        SMTanod_id.setText("ID: ");
+        SMFirst_name.setText("First Name: ");
+        SMLast_name.setText("Last Name: ");
+        SMMiddle_name.setText("Middle Name: ");
+        SMCreated_at.setText("Created At: ");
+        
+        UpdateTanod.setEnabled(false);
+        DayOfWeekFilter.setEnabled(false);
+        AddShift.setEnabled(false);
+        
+        appState.remove("editingTanodId");
+        
+        if(TanodSearchField.getText() != null){
+            try{
+                fillTanodsTable(Long.parseLong(TanodSearchField.getText()));
+            }
+            catch(NumberFormatException e){
+                fillTanodsTable(TanodSearchField.getText());
+            }
+        }
+        else{
+            fillTanodsTable();
+        }
+        
+        jLabel39.setText(""); jLabel40.setText(""); jLabel41.setText("");
+        RestorationDialog.setVisible(false);
+    }//GEN-LAST:event_DeleteTanodActionPerformed
+
+    private void tanod_last_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tanod_last_nameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tanod_last_nameActionPerformed
+
+    private void tanod_first_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tanod_first_nameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tanod_first_nameActionPerformed
+
+    private void RestoreTanodBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RestoreTanodBtnActionPerformed
+        // TODO add your handling code here:
+        try(Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            Tanod tanod = session.find(Tanod.class, appState.get("editingTanodId"));
+            tanod.unarchive();
+            session.merge(tanod);
+            session.getTransaction().commit();
+            session.close();
+        }
+        
+        // Reset all dependent components
+        SMTanod_id.setText("ID: ");
+        SMFirst_name.setText("First Name: ");
+        SMLast_name.setText("Last Name: ");
+        SMMiddle_name.setText("Middle Name: ");
+        SMCreated_at.setText("Created At: ");
+        
+        UpdateTanod.setEnabled(false);
+        DayOfWeekFilter.setEnabled(false);
+        AddShift.setEnabled(false);
+        
+        appState.remove("editingTanodId");
+        
+        if(TanodSearchField.getText() != null){
+            try{
+                fillTanodsTable(Long.parseLong(TanodSearchField.getText()));
+            }
+            catch(NumberFormatException e){
+                fillTanodsTable(TanodSearchField.getText());
+            }
+        }
+        else{
+            fillTanodsTable();
+        }
+        
+        jLabel39.setText(""); jLabel40.setText(""); jLabel41.setText("");
+        RestorationDialog.setVisible(false);
+    }//GEN-LAST:event_RestoreTanodBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2453,32 +3160,39 @@ public class TanodManagement extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                //new TanodManagement().setVisible(true);
-                showLoginDialog();
+                new TanodManagement().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddShift;
+    private javax.swing.JButton ArchiveTanod;
+    private javax.swing.JTable ArchivesTable;
+    private javax.swing.JPanel CardLayout;
     private javax.swing.JButton ClockIn;
     private javax.swing.JPanel ClockInClockOut;
+    private javax.swing.JButton ClockInClockOutBtn;
     private javax.swing.JButton ClockOut;
     private javax.swing.JPanel Dashboard;
+    private javax.swing.JButton DashboardBtn;
     private javax.swing.JComboBox<String> DayOfWeekFilter;
     private javax.swing.JLabel DeductionLabel;
     private javax.swing.JButton DeleteShift;
     private javax.swing.JButton DeleteTanod;
     private javax.swing.JLabel GrossLabel;
-    private javax.swing.JPanel Header;
     private javax.swing.JLabel IssuedOnLabel;
     private javax.swing.JButton LockButton;
-    private javax.swing.JTabbedPane Main;
+    private javax.swing.JPanel Main;
     private javax.swing.JButton ManualAdjustSave;
     private javax.swing.JLabel NetLabel;
     private javax.swing.JPanel Payroll;
+    private javax.swing.JButton PayrollBtn;
     private javax.swing.JLabel PayrollPeriodLabel;
     private javax.swing.JTable PayrollTable;
+    private javax.swing.JFrame RestorationDialog;
+    private javax.swing.JButton RestoreTanodBtn;
+    private javax.swing.JPanel RestoreTanodDialog;
     private javax.swing.JLabel SMCreated_at;
     private javax.swing.JLabel SMFirst_name;
     private javax.swing.JLabel SMLast_name;
@@ -2499,13 +3213,17 @@ public class TanodManagement extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> Shift_starts_at_hr;
     private javax.swing.JComboBox<String> Shift_starts_at_md;
     private javax.swing.JComboBox<String> Shift_starts_at_mn;
+    private javax.swing.JButton ShiftsBtn;
     private javax.swing.JPanel ShiftsManagement;
     private javax.swing.JPanel ShiftsManagementContent;
     private javax.swing.JPanel ShiftsManagementContent2;
     private javax.swing.JPanel ShiftsManagementHead;
     private javax.swing.JTable ShiftsTable;
     private javax.swing.JTable ShiftsTable2;
+    private javax.swing.JPanel SidePanel;
     private javax.swing.JPanel System;
+    private javax.swing.JButton SystemBtn;
+    private javax.swing.JButton SystemBtn1;
     private javax.swing.JFrame TanodForm;
     private javax.swing.JPanel TanodFormPanel;
     private javax.swing.JLabel TanodFullName;
@@ -2514,9 +3232,13 @@ public class TanodManagement extends javax.swing.JFrame {
     private javax.swing.JPanel TanodManagementHead;
     private javax.swing.JTextField TanodSearchField;
     private javax.swing.JTextField TanodSearchField2;
+    private javax.swing.JButton TanodsBtn;
     private javax.swing.JTable TanodsTable;
     private javax.swing.JPanel UpdateAdminCredentials;
     private javax.swing.JButton UpdateTanod;
+    private eltagonde.utils.BasicBackgroundPanel basicBackgroundPanel1;
+    private eltagonde.utils.BasicBackgroundPanel basicBackgroundPanel2;
+    private eltagonde.utils.BasicBackgroundPanel basicBackgroundPanel3;
     private com.github.lgooddatepicker.components.CalendarPanel calendarPanel1;
     private javax.swing.JComboBox<String> clock_in_hr;
     private javax.swing.JComboBox<String> clock_in_md;
@@ -2524,7 +3246,9 @@ public class TanodManagement extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> clock_out_hr;
     private javax.swing.JComboBox<String> clock_out_md;
     private javax.swing.JComboBox<String> clock_out_mn;
+    private eltagonde.utils.GradientBackgroundPanel gradientBackgroundPanel1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -2560,35 +3284,64 @@ public class TanodManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPasswordField password;
+    private javax.swing.JPasswordField passwordText;
     private com.github.lgooddatepicker.components.DatePicker payrollEnd;
     private com.github.lgooddatepicker.components.DatePicker payrollStart;
     private javax.swing.JTextField tanod_first_name;
     private javax.swing.JLabel tanod_first_name_label;
+    private javax.swing.JLabel tanod_first_name_label1;
     private javax.swing.JTextField tanod_last_name;
     private javax.swing.JLabel tanod_last_name_label;
+    private javax.swing.JLabel tanod_last_name_label1;
     private javax.swing.JTextField tanod_middle_name;
     private javax.swing.JLabel tanod_middle_name_label;
+    private javax.swing.JLabel tanod_middle_name_label1;
+    private javax.swing.JTextField userText;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

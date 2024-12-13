@@ -5,6 +5,7 @@
 package eltagonde.models;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +31,10 @@ public class Tanod {
     private String first_name;
     private String last_name;
     private String middle_name;
-        
+
+    @Column(nullable=false, columnDefinition="boolean default false")
+    private Boolean archived;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
     
@@ -39,6 +43,7 @@ public class Tanod {
     
     public Tanod(){
         this.created_at = new Date();
+        this.archived = false;
     }
     
     public Tanod(String first_name, String last_name, String middle_name){
@@ -46,6 +51,7 @@ public class Tanod {
         this.last_name = last_name;
         this.middle_name = middle_name;
         this.created_at = new Date();
+        this.archived = false;
     }
 
     public Long getId(){
@@ -94,5 +100,17 @@ public class Tanod {
     
     public String getFullname(){
         return this.first_name + " " + this.last_name;
+    }
+    
+    public Boolean is_archived(){
+        return this.archived;
+    }
+    
+    public void archive(){
+        this.archived = true;
+    }
+    
+    public void unarchive(){
+        this.archived = false;
     }
 }
