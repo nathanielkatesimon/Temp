@@ -4,6 +4,7 @@
  */
 package eltagonde.models;
 
+import eltagonde.utils.TimeHelpers;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -28,9 +32,11 @@ public class Tanod {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
         
-    private String first_name;
-    private String last_name;
-    private String middle_name;
+    private String full_name;
+    private String address;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date birth_date;
 
     @Column(nullable=false, columnDefinition="boolean default false")
     private Boolean archived;
@@ -46,10 +52,10 @@ public class Tanod {
         this.archived = false;
     }
     
-    public Tanod(String first_name, String last_name, String middle_name){
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.middle_name = middle_name;
+    public Tanod(String full_name, String address, Date birth_date){
+        this.full_name = full_name;
+        this.address = address;
+        this.birth_date = birth_date;
         this.created_at = new Date();
         this.archived = false;
     }
@@ -62,44 +68,44 @@ public class Tanod {
         this.id = id;
     }
         
-    public Date getCreatedAt(){
-        return this.created_at;
+    public String getCreatedAt(){
+        return TimeHelpers.DateToSimpleFormat(this.created_at);
     }
-        
+
     public void setCreatedAt(Date created_at){
         this.created_at = created_at;
     }
         
-    public String getFirstname(){
-        return this.first_name;
+    public String getFullname(){
+        return this.full_name;
     }
         
-    public void setFirstname(String first_name){
-        this.first_name = first_name;
-    }
-
-    public String getLastname(){
-        return last_name;
+    public void setFullname(String full_name){
+        this.full_name = full_name;
     }
         
-    public void setLastname(String last_name){
-        this.last_name = last_name;
+    public String getAddress(){
+        return this.address;
     }
         
-    public String getMiddlename(){
-        return middle_name;
-    }
-        
-    public void setMiddlename(String middle_name){
-        this.middle_name = middle_name;
+    public void setAddress(String address){
+        this.address = address;
     }
     
     public List<Shift> getShifts(){
         return this.shifts;
     }
     
-    public String getFullname(){
-        return this.first_name + " " + this.last_name;
+    public Date getBirthDate(){
+        return this.birth_date;
+    }
+    
+    public String getSimpleBirthDate(){
+        return TimeHelpers.DateToSimpleFormat(this.birth_date);
+    }
+
+    public void setBirthDate(Date birth_date){
+        this.birth_date = birth_date;
     }
     
     public Boolean is_archived(){
@@ -112,5 +118,17 @@ public class Tanod {
     
     public void unarchive(){
         this.archived = false;
+    }
+
+    public int getAge() {
+        if (birth_date == null) {
+            throw new IllegalStateException("Birth date is not set");
+        }
+
+        LocalDate birthDateLocal = birth_date.toInstant()
+                                              .atZone(ZoneId.systemDefault())
+                                              .toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+        return Period.between(birthDateLocal, currentDate).getYears();
     }
 }

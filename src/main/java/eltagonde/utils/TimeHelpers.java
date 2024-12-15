@@ -4,8 +4,13 @@
  */
 package eltagonde.utils;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.swing.JComboBox;
 
 /**
@@ -52,5 +57,15 @@ public class TimeHelpers {
         int hours = min/60;
         int minutes = min%60;
         return String.format("%d hr %d min", hours, minutes);
+    }
+    
+    public static LocalDate DateToLocalDate(Date date){
+        Instant instant = date.toInstant();
+        return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+    
+    public static String DateToSimpleFormat(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("MMMM d, yyyy");
+        return formatter.format(date);
     }
 }

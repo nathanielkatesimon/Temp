@@ -5,6 +5,7 @@
     <Container class="javax.swing.JFrame" name="TanodForm">
       <Properties>
         <Property name="title" type="java.lang.String" value="New Tanod"/>
+        <Property name="alwaysOnTop" type="boolean" value="true"/>
         <Property name="location" type="java.awt.Point" editor="org.netbeans.beaninfo.editors.PointEditor">
           <Point value="[0, 0]"/>
         </Property>
@@ -55,25 +56,37 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="tanod_last_name" alignment="0" max="32767" attributes="0"/>
-                          <Component id="tanod_first_name" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="tanod_age" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="tanod_first_name_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tanod_last_name_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tanod_middle_name_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tanod_fullname" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="tanod_address" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="tanod_first_name_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="tanod_address_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="tanod_birth_date_label" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="tanod_birth_date" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace min="0" pref="56" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="tanod_middle_name" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="ArchiveTanod" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="SaveTanod" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="ArchiveTanod" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="SaveTanod" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -83,40 +96,32 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="tanod_first_name_label" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tanod_first_name" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="tanod_last_name_label" min="-2" max="-2" attributes="0"/>
+                      <Component id="tanod_fullname" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tanod_last_name" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="tanod_middle_name_label" min="-2" max="-2" attributes="0"/>
+                      <Component id="tanod_address_label" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tanod_middle_name" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="tanod_address" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="SaveTanod" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="ArchiveTanod" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="tanod_birth_date" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="tanod_birth_date_label" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="tanod_age" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="ArchiveTanod" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="SaveTanod" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="83" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JTextField" name="tanod_first_name">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tanod_first_nameActionPerformed"/>
-              </Events>
+            <Component class="javax.swing.JTextField" name="tanod_fullname">
             </Component>
-            <Component class="javax.swing.JTextField" name="tanod_last_name">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tanod_last_nameActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JTextField" name="tanod_middle_name">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tanod_middle_nameActionPerformed"/>
-              </Events>
+            <Component class="javax.swing.JTextField" name="tanod_address">
             </Component>
             <Component class="javax.swing.JButton" name="SaveTanod">
               <Properties>
@@ -166,17 +171,48 @@
             </Component>
             <Component class="javax.swing.JLabel" name="tanod_first_name_label">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Given name:"/>
+                <Property name="text" type="java.lang.String" value="Fullname"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="tanod_last_name_label">
+            <Component class="javax.swing.JLabel" name="tanod_birth_date_label">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Family name:"/>
+                <Property name="text" type="java.lang.String" value="Birth Date:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="tanod_middle_name_label">
+            <Component class="javax.swing.JLabel" name="tanod_address_label">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Middle name:"/>
+                <Property name="text" type="java.lang.String" value="Address:"/>
+              </Properties>
+            </Component>
+            <Component class="com.github.lgooddatepicker.components.DatePicker" name="tanod_birth_date">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="&quot;January 1, 2000&quot;" type="code"/>
+                </Property>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
+                    <CompoundBorder>
+                      <Connection PropertyName="outside" component="clock_in_hr" name="border" type="property"/>
+                      <Border PropertyName="inside" info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                        <EmptyBorder bottom="1" left="5" right="1" top="1"/>
+                      </Border>
+                    </CompoundBorder>
+                  </Border>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="tanod_birth_datePropertyChange"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="tanod_birth_date.getComponentDateTextField().setEnabled(false);&#xa;tanod_birth_date.getComponentDateTextField().setBorder(null);&#xa;&#xa;tanod_birth_date.getComponentToggleCalendarButton().setBorder(javax.swing.BorderFactory.createCompoundBorder(&#xa;    clock_in_hr.getBorder(), javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5)&#xa;));&#xa;tanod_birth_date.getComponentToggleCalendarButton().setText(&quot;&quot;);&#xa;tanod_birth_date.getComponentToggleCalendarButton().setBackground(java.awt.Color.decode(&quot;#007bfe&quot;));&#xa;&#xa;tanod_birth_date.getComponentToggleCalendarButton().setIcon(&#xa;    IconFontSwing.buildIcon(&#xa;        FontAwesome.CALENDAR,&#xa;        10,&#xa;        java.awt.Color.WHITE&#xa;    )&#xa;);"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="tanod_age">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Age:"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -186,6 +222,7 @@
     <Container class="javax.swing.JFrame" name="ShiftForm">
       <Properties>
         <Property name="title" type="java.lang.String" value="Add Shift"/>
+        <Property name="alwaysOnTop" type="boolean" value="true"/>
         <Property name="location" type="java.awt.Point" editor="org.netbeans.beaninfo.editors.PointEditor">
           <Point value="[0, 0]"/>
         </Property>
@@ -604,6 +641,7 @@
     <Container class="javax.swing.JFrame" name="RestorationDialog">
       <Properties>
         <Property name="title" type="java.lang.String" value="New Tanod"/>
+        <Property name="alwaysOnTop" type="boolean" value="true"/>
         <Property name="location" type="java.awt.Point" editor="org.netbeans.beaninfo.editors.PointEditor">
           <Point value="[0, 0]"/>
         </Property>
@@ -616,7 +654,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="TanodForm.setLocationRelativeTo(null);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="RestorationDialog.setLocationRelativeTo(null);"/>
       </AuxValues>
 
       <Layout>
@@ -662,14 +700,12 @@
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="tanod_first_name_label1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tanod_last_name_label1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tanod_middle_name_label1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel39" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel40" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel41" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="restore_dialog_fullname" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="restore_dialog_address" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="restore_dialog_age" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="restore_dialog_birth_date" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="213" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -680,18 +716,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tanod_first_name_label1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel39" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                      <Component id="tanod_last_name_label1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel40" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                      <Component id="tanod_middle_name_label1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel41" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="restore_dialog_fullname" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="restore_dialog_address" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="restore_dialog_age" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="restore_dialog_birth_date" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="RestoreTanodBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="DeleteTanod" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -748,34 +780,24 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DeleteTanodActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="tanod_first_name_label1">
+            <Component class="javax.swing.JLabel" name="restore_dialog_fullname">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Given name:"/>
+                <Property name="text" type="java.lang.String" value="Fullname:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="tanod_last_name_label1">
+            <Component class="javax.swing.JLabel" name="restore_dialog_address">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Family name:"/>
+                <Property name="text" type="java.lang.String" value="Address:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="tanod_middle_name_label1">
+            <Component class="javax.swing.JLabel" name="restore_dialog_age">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Middle name:"/>
+                <Property name="text" type="java.lang.String" value="Age"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel39">
+            <Component class="javax.swing.JLabel" name="restore_dialog_birth_date">
               <Properties>
-                <Property name="text" type="java.lang.String" value="TanodGivenName"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel40">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="TanodFamilyName"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel41">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="TanodMiddlename"/>
+                <Property name="text" type="java.lang.String" value="Birth Date:"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -1130,17 +1152,17 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="1011" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="880" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Component id="CardLayout" alignment="0" pref="880" max="32767" attributes="0"/>
+                      <Component id="CardLayout" alignment="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="640" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="524" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Component id="CardLayout" alignment="1" pref="524" max="32767" attributes="0"/>
+                      <Component id="CardLayout" alignment="1" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1165,12 +1187,12 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane6" alignment="0" pref="1011" max="32767" attributes="0"/>
+                          <Component id="jScrollPane6" alignment="0" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane6" alignment="1" pref="640" max="32767" attributes="0"/>
+                          <Component id="jScrollPane6" alignment="1" pref="524" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -1710,7 +1732,6 @@
                       <SubComponents>
                         <Component class="com.github.lgooddatepicker.components.CalendarPanel" name="calendarPanel1">
                           <Events>
-                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="calendarPanel1MouseClicked"/>
                             <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="calendarPanel1PropertyChange"/>
                           </Events>
                         </Component>
@@ -2139,7 +2160,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTabbedPane1" pref="551" max="32767" attributes="0"/>
+                              <Component id="jTabbedPane1" pref="435" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -2161,7 +2182,7 @@
                                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="TanodSearchField" min="-2" pref="289" max="-2" attributes="0"/>
-                                  <EmptySpace pref="578" max="32767" attributes="0"/>
+                                  <EmptySpace pref="447" max="32767" attributes="0"/>
                                   <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
@@ -2224,6 +2245,9 @@
                     <Component class="javax.swing.JSeparator" name="jSeparator1">
                     </Component>
                     <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+                      <Properties>
+                        <Property name="focusable" type="boolean" value="false"/>
+                      </Properties>
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
                       <SubComponents>
@@ -2255,11 +2279,10 @@
                                 </Property>
                               </Properties>
                               <Events>
-                                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="TanodsTableFocusGained"/>
                                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TanodsTableMouseClicked"/>
                               </Events>
                               <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="TanodsTable.setDefaultEditor(Object.class, null);&#xa;DefaultTableModel tableModel = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;&#xa;    },&#xa;    new String [] {&#xa;        &quot;ID&quot;, &quot;First Name&quot;, &quot;Last Name&quot;, &quot;Middle Name&quot;, &quot;Created At&quot;&#xa;    }&#xa;);"/>
+                                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="TanodsTable.setDefaultEditor(Object.class, null);&#xa;DefaultTableModel tableModel = new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;&#xa;    },&#xa;    new String [] {&#xa;        &quot;ID&quot;, &quot;Fullname&quot;, &quot;Address&quot;, &quot;Age&quot;, &quot;Birth Date&quot;, &quot;Created At&quot;&#xa;    }&#xa;);"/>
                               </AuxValues>
                             </Component>
                           </SubComponents>
@@ -2292,11 +2315,10 @@
                                 </Property>
                               </Properties>
                               <Events>
-                                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="ArchivesTableFocusGained"/>
                                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ArchivesTableMouseClicked"/>
                               </Events>
                               <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="ArchivesTable.setDefaultEditor(Object.class, null);&#xa;DefaultTableModel archivesTableModel = new DefaultTableModel(&#xa;    new Object [][] {},&#xa;    new String [] { &quot;ID&quot;, &quot;First Name&quot;, &quot;Last Name&quot;, &quot;Middle Name&quot;, &quot;Created At&quot;}&#xa;);"/>
+                                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="ArchivesTable.setDefaultEditor(Object.class, null);&#xa;DefaultTableModel archivesTableModel = new DefaultTableModel(&#xa;    new Object [][] {},&#xa;    new String [] { &quot;ID&quot;, &quot;Fullname&quot;, &quot;Address&quot;, &quot;Age&quot;, &quot;Birth Date&quot;, &quot;Created At&quot;}&#xa;);"/>
                               </AuxValues>
                             </Component>
                           </SubComponents>
@@ -2382,7 +2404,6 @@
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TanodSearchField2ActionPerformed"/>
-                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TanodSearchField2KeyPressed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -2414,22 +2435,22 @@
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                       </Group>
-                                      <Group type="102" alignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                              <Group type="102" alignment="0" attributes="0">
+                                              <Group type="102" attributes="0">
                                                   <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="SMFirst_name" alignment="0" min="-2" max="-2" attributes="0"/>
                                                       <Component id="UpdateTanod" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="SMTanod_id" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="SMLast_name" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="SMMiddle_name" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="SMAddress" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="SMAge" min="-2" max="-2" attributes="0"/>
                                                       <Component id="SMCreated_at" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="SMFull_name" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="SMBirth_date" alignment="0" min="-2" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
                                           </Group>
-                                          <EmptySpace min="537" pref="890" max="32767" attributes="0"/>
+                                          <EmptySpace min="537" pref="759" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -2441,13 +2462,13 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="SMTanod_id" min="-2" max="-2" attributes="0"/>
+                                  <Component id="SMFull_name" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="SMFirst_name" min="-2" max="-2" attributes="0"/>
+                                  <Component id="SMAddress" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="SMLast_name" min="-2" max="-2" attributes="0"/>
+                                  <Component id="SMAge" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="SMMiddle_name" min="-2" max="-2" attributes="0"/>
+                                  <Component id="SMBirth_date" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="SMCreated_at" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -2460,7 +2481,7 @@
                                           <Component id="AddShift" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="jScrollPane2" pref="405" max="32767" attributes="0"/>
+                                      <Component id="jScrollPane2" pref="289" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
@@ -2477,24 +2498,19 @@
                             </Property>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JLabel" name="SMTanod_id">
+                        <Component class="javax.swing.JLabel" name="SMFull_name">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="ID:"/>
+                            <Property name="text" type="java.lang.String" value="Fullname:"/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JLabel" name="SMFirst_name">
+                        <Component class="javax.swing.JLabel" name="SMAddress">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="First Name:"/>
+                            <Property name="text" type="java.lang.String" value="Address:"/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JLabel" name="SMLast_name">
+                        <Component class="javax.swing.JLabel" name="SMAge">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="Last Name:"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JLabel" name="SMMiddle_name">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Middle Name:"/>
+                            <Property name="text" type="java.lang.String" value="Age:"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="SMCreated_at">
@@ -2620,6 +2636,11 @@
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                           </AuxValues>
                         </Component>
+                        <Component class="javax.swing.JLabel" name="SMBirth_date">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Birth Date:"/>
+                          </Properties>
+                        </Component>
                       </SubComponents>
                     </Container>
                   </SubComponents>
@@ -2656,7 +2677,7 @@
                                   <Component id="jPanel2" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="313" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="197" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -2678,7 +2699,7 @@
                               <Group type="102" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jScrollPane3" alignment="1" pref="733" max="32767" attributes="0"/>
+                                      <Component id="jScrollPane3" alignment="1" pref="602" max="32767" attributes="0"/>
                                       <Component id="jSeparator6" alignment="0" max="32767" attributes="0"/>
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
@@ -2746,9 +2767,6 @@
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JTextField" name="SearchTanodField">
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SearchTanodFieldActionPerformed"/>
-                          </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel10">
                           <Properties>
@@ -3182,7 +3200,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="UpdateAdminCredentials" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="636" max="32767" attributes="0"/>
+                              <EmptySpace pref="505" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -3191,7 +3209,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="UpdateAdminCredentials" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="409" max="32767" attributes="0"/>
+                              <EmptySpace pref="293" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -3407,21 +3425,21 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="ClockInClockOutBtn">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="IconFontSwing.buildIcon(&#xa;    FontAwesome.CLOCK_O,&#xa;    14,&#xa;    java.awt.Color.WHITE&#xa;)" type="code"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Clock In/Out"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection component="DashboardBtn" name="background" type="property"/>
+                    </Property>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="DashboardBtn" name="border" type="property"/>
                     </Property>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="14" style="0"/>
                     </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection component="DashboardBtn" name="foreground" type="property"/>
-                    </Property>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="IconFontSwing.buildIcon(&#xa;    FontAwesome.CLOCK_O,&#xa;    14,&#xa;    java.awt.Color.WHITE&#xa;)" type="code"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Clock In/Out"/>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection component="DashboardBtn" name="border" type="property"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection component="DashboardBtn" name="horizontalAlignment" type="property"/>

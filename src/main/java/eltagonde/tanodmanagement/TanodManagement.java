@@ -14,6 +14,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class TanodManagement extends javax.swing.JFrame {
            for(Attendance attendance : attendances){
                 tableModel.addRow(new Object[]{
                     attendance.getId(),
-                    attendance.getTanod().getFirstname() + " " + attendance.getTanod().getLastname(),
+                    attendance.getTanod().getFullname(),
                     TimeHelpers.toAMPM(attendance.getSupposedClockIn()) + " " + TimeHelpers.toAMPM(attendance.getSupposedClockOut()),
                     TimeHelpers.toAMPM(attendance.getActualClockIn()),
                     TimeHelpers.toAMPM(attendance.getActualClockOut()),
@@ -145,7 +146,7 @@ public class TanodManagement extends javax.swing.JFrame {
 
                tableModel.addRow(new Object[]{
                    attendance.getId(),
-                   shift.getTanod().getFirstname() + " " + shift.getTanod().getLastname(),
+                   shift.getTanod().getFullname(),
                    TimeHelpers.toAMPM(shift.getShiftStart()) + " - " + TimeHelpers.toAMPM(shift.getShiftEnd()),
                    attendance.getActualClockIn() != null ? TimeHelpers.toAMPM(attendance.getActualClockIn()) : null,
                    attendance.getActualClockOut() != null ? TimeHelpers.toAMPM(attendance.getActualClockOut()) : null,
@@ -212,7 +213,7 @@ public class TanodManagement extends javax.swing.JFrame {
        try(Session session = sessionFactory.openSession()){
            session.beginTransaction();
            
-           String hql = "SELECT t FROM Tanod t WHERE t.first_name LIKE :searchTerm OR t.last_name LIKE :searchTerm OR t.middle_name LIKE :searchTerm";
+           String hql = "SELECT t FROM Tanod t WHERE t.full_name LIKE :searchTerm";
            
            Query<Tanod> query = session.createQuery(hql, Tanod.class);
            query.setParameter("searchTerm", "%" + searchTerm + "%");
@@ -252,23 +253,23 @@ public class TanodManagement extends javax.swing.JFrame {
    private void performFillOnTanodsTable(List<Tanod> tanods){
     DefaultTableModel tableModel = new DefaultTableModel(
         new Object [][] {},
-        new String [] { "ID", "First Name", "Last Name", "Middle Name", "Created At"}
+        new String [] { "ID", "Fullname", "Address", "Age", "Birth Date", "Created At"}
     );
     
     DefaultTableModel archivesTableModel = new DefaultTableModel(
         new Object [][] {},
-        new String [] { "ID", "First Name", "Last Name", "Middle Name", "Created At"}
+        new String [] { "ID", "Fullname", "Address", "Age", "Birth Date", "Created At"}
     );
 
     for(Tanod tanod: tanods){
         if(tanod.is_archived()){
             archivesTableModel.addRow(new Object[]{
-                tanod.getId(), tanod.getFirstname(), tanod.getLastname(), tanod.getMiddlename(), tanod.getCreatedAt()
+                tanod.getId(), tanod.getFullname(), tanod.getAddress(), tanod.getAge(), tanod.getSimpleBirthDate(), tanod.getCreatedAt()
             });
         }
         else{
             tableModel.addRow(new Object[]{
-                tanod.getId(), tanod.getFirstname(), tanod.getLastname(), tanod.getMiddlename(), tanod.getCreatedAt()
+                tanod.getId(), tanod.getFullname(), tanod.getAddress(), tanod.getAge(), tanod.getSimpleBirthDate(), tanod.getCreatedAt()
             });
         }
     }
@@ -297,14 +298,15 @@ public class TanodManagement extends javax.swing.JFrame {
 
         TanodForm = new javax.swing.JFrame();
         TanodFormPanel = new javax.swing.JPanel();
-        tanod_first_name = new javax.swing.JTextField();
-        tanod_last_name = new javax.swing.JTextField();
-        tanod_middle_name = new javax.swing.JTextField();
+        tanod_fullname = new javax.swing.JTextField();
+        tanod_address = new javax.swing.JTextField();
         SaveTanod = new javax.swing.JButton();
         ArchiveTanod = new javax.swing.JButton();
         tanod_first_name_label = new javax.swing.JLabel();
-        tanod_last_name_label = new javax.swing.JLabel();
-        tanod_middle_name_label = new javax.swing.JLabel();
+        tanod_birth_date_label = new javax.swing.JLabel();
+        tanod_address_label = new javax.swing.JLabel();
+        tanod_birth_date = new com.github.lgooddatepicker.components.DatePicker();
+        tanod_age = new javax.swing.JLabel();
         ShiftForm = new javax.swing.JFrame();
         ShiftFormPanel = new javax.swing.JPanel();
         SaveShift = new javax.swing.JButton();
@@ -323,12 +325,10 @@ public class TanodManagement extends javax.swing.JFrame {
         RestoreTanodDialog = new javax.swing.JPanel();
         RestoreTanodBtn = new javax.swing.JButton();
         DeleteTanod = new javax.swing.JButton();
-        tanod_first_name_label1 = new javax.swing.JLabel();
-        tanod_last_name_label1 = new javax.swing.JLabel();
-        tanod_middle_name_label1 = new javax.swing.JLabel();
-        jLabel39 = new javax.swing.JLabel();
-        jLabel40 = new javax.swing.JLabel();
-        jLabel41 = new javax.swing.JLabel();
+        restore_dialog_fullname = new javax.swing.JLabel();
+        restore_dialog_address = new javax.swing.JLabel();
+        restore_dialog_age = new javax.swing.JLabel();
+        restore_dialog_birth_date = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -405,16 +405,16 @@ public class TanodManagement extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         ShiftsManagementContent = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        SMTanod_id = new javax.swing.JLabel();
-        SMFirst_name = new javax.swing.JLabel();
-        SMLast_name = new javax.swing.JLabel();
-        SMMiddle_name = new javax.swing.JLabel();
+        SMFull_name = new javax.swing.JLabel();
+        SMAddress = new javax.swing.JLabel();
+        SMAge = new javax.swing.JLabel();
         SMCreated_at = new javax.swing.JLabel();
         UpdateTanod = new javax.swing.JButton();
         AddShift = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         ShiftsTable = new javax.swing.JTable();
         DayOfWeekFilter = new javax.swing.JComboBox<>();
+        SMBirth_date = new javax.swing.JLabel();
         Payroll = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         SearchTanodField = new javax.swing.JTextField();
@@ -477,6 +477,7 @@ public class TanodManagement extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
 
         TanodForm.setTitle("New Tanod");
+        TanodForm.setAlwaysOnTop(true);
         TanodForm.setLocation(new java.awt.Point(0, 0));
         TanodForm.setMinimumSize(new java.awt.Dimension(300, 200));
         TanodForm.setResizable(false);
@@ -487,24 +488,6 @@ public class TanodManagement extends javax.swing.JFrame {
         TanodFormPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         TanodFormPanel.setName("asdasd"); // NOI18N
         TanodFormPanel.setPreferredSize(new java.awt.Dimension(300, 221));
-
-        tanod_first_name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tanod_first_nameActionPerformed(evt);
-            }
-        });
-
-        tanod_last_name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tanod_last_nameActionPerformed(evt);
-            }
-        });
-
-        tanod_middle_name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tanod_middle_nameActionPerformed(evt);
-            }
-        });
 
         SaveTanod.setIcon(IconFontSwing.buildIcon(
             FontAwesome.FLOPPY_O,
@@ -538,11 +521,38 @@ public class TanodManagement extends javax.swing.JFrame {
             }
         });
 
-        tanod_first_name_label.setText("Given name:");
+        tanod_first_name_label.setText("Fullname");
 
-        tanod_last_name_label.setText("Family name:");
+        tanod_birth_date_label.setText("Birth Date:");
 
-        tanod_middle_name_label.setText("Middle name:");
+        tanod_address_label.setText("Address:");
+
+        tanod_birth_date.setText("January 1, 2000");
+        tanod_birth_date.setBackground(new java.awt.Color(255, 255, 255));
+        tanod_birth_date.setBorder(javax.swing.BorderFactory.createCompoundBorder(clock_in_hr.getBorder(), javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1)));
+        tanod_birth_date.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tanod_birth_datePropertyChange(evt);
+            }
+        });
+        tanod_birth_date.getComponentDateTextField().setEnabled(false);
+        tanod_birth_date.getComponentDateTextField().setBorder(null);
+
+        tanod_birth_date.getComponentToggleCalendarButton().setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            clock_in_hr.getBorder(), javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5)
+        ));
+        tanod_birth_date.getComponentToggleCalendarButton().setText("");
+        tanod_birth_date.getComponentToggleCalendarButton().setBackground(java.awt.Color.decode("#007bfe"));
+
+        tanod_birth_date.getComponentToggleCalendarButton().setIcon(
+            IconFontSwing.buildIcon(
+                FontAwesome.CALENDAR,
+                10,
+                java.awt.Color.WHITE
+            )
+        );
+
+        tanod_age.setText("Age:");
 
         javax.swing.GroupLayout TanodFormPanelLayout = new javax.swing.GroupLayout(TanodFormPanel);
         TanodFormPanel.setLayout(TanodFormPanelLayout);
@@ -551,21 +561,29 @@ public class TanodManagement extends javax.swing.JFrame {
             .addGroup(TanodFormPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(TanodFormPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tanod_last_name)
-                    .addComponent(tanod_first_name)
+                    .addGroup(TanodFormPanelLayout.createSequentialGroup()
+                        .addComponent(tanod_age)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(TanodFormPanelLayout.createSequentialGroup()
                         .addGroup(TanodFormPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tanod_first_name_label)
-                            .addComponent(tanod_last_name_label)
-                            .addComponent(tanod_middle_name_label))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(tanod_middle_name)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TanodFormPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(ArchiveTanod)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SaveTanod)))
-                .addContainerGap())
+                            .addComponent(tanod_fullname)
+                            .addComponent(tanod_address)
+                            .addGroup(TanodFormPanelLayout.createSequentialGroup()
+                                .addGroup(TanodFormPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tanod_first_name_label)
+                                    .addComponent(tanod_address_label)
+                                    .addGroup(TanodFormPanelLayout.createSequentialGroup()
+                                        .addComponent(tanod_birth_date_label)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(tanod_birth_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 56, Short.MAX_VALUE)))
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TanodFormPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ArchiveTanod)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(SaveTanod)
+                .addGap(5, 5, 5))
         );
         TanodFormPanelLayout.setVerticalGroup(
             TanodFormPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -573,20 +591,22 @@ public class TanodManagement extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(tanod_first_name_label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tanod_first_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(tanod_last_name_label)
+                .addComponent(tanod_fullname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tanod_last_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(tanod_middle_name_label)
+                .addComponent(tanod_address_label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tanod_middle_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(tanod_address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
                 .addGroup(TanodFormPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SaveTanod)
-                    .addComponent(ArchiveTanod))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(tanod_birth_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tanod_birth_date_label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tanod_age)
+                .addGap(37, 37, 37)
+                .addGroup(TanodFormPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ArchiveTanod)
+                    .addComponent(SaveTanod))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout TanodFormLayout = new javax.swing.GroupLayout(TanodForm.getContentPane());
@@ -601,6 +621,7 @@ public class TanodManagement extends javax.swing.JFrame {
         );
 
         ShiftForm.setTitle("Add Shift");
+        ShiftForm.setAlwaysOnTop(true);
         ShiftForm.setLocation(new java.awt.Point(0, 0));
         ShiftForm.setMinimumSize(new java.awt.Dimension(300, 200));
         ShiftForm.setResizable(false);
@@ -734,60 +755,57 @@ public class TanodManagement extends javax.swing.JFrame {
     ShiftForm.getAccessibleContext().setAccessibleName("");
 
     RestorationDialog.setTitle("New Tanod");
+    RestorationDialog.setAlwaysOnTop(true);
     RestorationDialog.setLocation(new java.awt.Point(0, 0));
     RestorationDialog.setMinimumSize(new java.awt.Dimension(300, 200));
     RestorationDialog.setResizable(false);
     RestorationDialog.setSize(new java.awt.Dimension(300, 290));
-    TanodForm.setLocationRelativeTo(null);
+    RestorationDialog.setLocationRelativeTo(null);
 
     RestoreTanodDialog.setBackground(new java.awt.Color(255, 255, 255));
     RestoreTanodDialog.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
     RestoreTanodDialog.setName("asdasd"); // NOI18N
     RestoreTanodDialog.setPreferredSize(new java.awt.Dimension(300, 221));
 
-    RestoreTanodBtn.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
-    RestoreTanodBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-    RestoreTanodBtn.setForeground(new java.awt.Color(255, 255, 255));
     RestoreTanodBtn.setIcon(IconFontSwing.buildIcon(
         FontAwesome.HISTORY,
         15,
         java.awt.Color.WHITE
     ));
     RestoreTanodBtn.setText("Restore");
+    RestoreTanodBtn.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
     RestoreTanodBtn.setBorder(ClockIn.getBorder());
+    RestoreTanodBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+    RestoreTanodBtn.setForeground(new java.awt.Color(255, 255, 255));
     RestoreTanodBtn.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             RestoreTanodBtnActionPerformed(evt);
         }
     });
 
-    DeleteTanod.setBackground(javax.swing.UIManager.getDefaults().getColor("Component.error.borderColor"));
-    DeleteTanod.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-    DeleteTanod.setForeground(new java.awt.Color(255, 255, 255));
     DeleteTanod.setIcon(IconFontSwing.buildIcon(
         FontAwesome.TRASH,
         15,
         java.awt.Color.WHITE
     ));
     DeleteTanod.setText("Delete");
+    DeleteTanod.setBackground(javax.swing.UIManager.getDefaults().getColor("Component.error.borderColor"));
     DeleteTanod.setBorder(ClockIn.getBorder());
+    DeleteTanod.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+    DeleteTanod.setForeground(new java.awt.Color(255, 255, 255));
     DeleteTanod.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             DeleteTanodActionPerformed(evt);
         }
     });
 
-    tanod_first_name_label1.setText("Given name:");
+    restore_dialog_fullname.setText("Fullname:");
 
-    tanod_last_name_label1.setText("Family name:");
+    restore_dialog_address.setText("Address:");
 
-    tanod_middle_name_label1.setText("Middle name:");
+    restore_dialog_age.setText("Age");
 
-    jLabel39.setText("TanodGivenName");
-
-    jLabel40.setText("TanodFamilyName");
-
-    jLabel41.setText("TanodMiddlename");
+    restore_dialog_birth_date.setText("Birth Date:");
 
     javax.swing.GroupLayout RestoreTanodDialogLayout = new javax.swing.GroupLayout(RestoreTanodDialog);
     RestoreTanodDialog.setLayout(RestoreTanodDialogLayout);
@@ -803,31 +821,25 @@ public class TanodManagement extends javax.swing.JFrame {
                     .addComponent(RestoreTanodBtn))
                 .addGroup(RestoreTanodDialogLayout.createSequentialGroup()
                     .addGroup(RestoreTanodDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(tanod_first_name_label1)
-                        .addComponent(tanod_last_name_label1)
-                        .addComponent(tanod_middle_name_label1)
-                        .addComponent(jLabel39)
-                        .addComponent(jLabel40)
-                        .addComponent(jLabel41))
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(restore_dialog_fullname)
+                        .addComponent(restore_dialog_address)
+                        .addComponent(restore_dialog_age)
+                        .addComponent(restore_dialog_birth_date))
+                    .addGap(0, 213, Short.MAX_VALUE)))
             .addContainerGap())
     );
     RestoreTanodDialogLayout.setVerticalGroup(
         RestoreTanodDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(RestoreTanodDialogLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(tanod_first_name_label1)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jLabel39)
-            .addGap(24, 24, 24)
-            .addComponent(tanod_last_name_label1)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jLabel40)
-            .addGap(24, 24, 24)
-            .addComponent(tanod_middle_name_label1)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jLabel41)
-            .addGap(24, 24, 24)
+            .addComponent(restore_dialog_fullname)
+            .addGap(18, 18, 18)
+            .addComponent(restore_dialog_address)
+            .addGap(18, 18, 18)
+            .addComponent(restore_dialog_age)
+            .addGap(18, 18, 18)
+            .addComponent(restore_dialog_birth_date)
+            .addGap(68, 68, 68)
             .addGroup(RestoreTanodDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(RestoreTanodBtn)
                 .addComponent(DeleteTanod))
@@ -1214,11 +1226,11 @@ public class TanodManagement extends javax.swing.JFrame {
     Dashboard.setLayout(DashboardLayout);
     DashboardLayout.setHorizontalGroup(
         DashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1011, Short.MAX_VALUE)
+        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
     );
     DashboardLayout.setVerticalGroup(
         DashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+        .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
     );
 
     CardLayout.add(Dashboard, "DashboardCard");
@@ -1247,11 +1259,6 @@ public class TanodManagement extends javax.swing.JFrame {
     ShiftsManagementContent2.setBackground(new java.awt.Color(255, 255, 255));
     ShiftsManagementContent2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
 
-    calendarPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            calendarPanel1MouseClicked(evt);
-        }
-    });
     calendarPanel1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
         public void propertyChange(java.beans.PropertyChangeEvent evt) {
             calendarPanel1PropertyChange(evt);
@@ -1522,7 +1529,7 @@ public class TanodManagement extends javax.swing.JFrame {
             .addComponent(jLabel2)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(TanodSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 578, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 431, Short.MAX_VALUE)
             .addComponent(jButton1)
             .addContainerGap())
     );
@@ -1537,23 +1544,20 @@ public class TanodManagement extends javax.swing.JFrame {
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
+    jTabbedPane1.setFocusable(false);
+
     TanodsTable.setDefaultEditor(Object.class, null);
     DefaultTableModel tableModel = new javax.swing.table.DefaultTableModel(
         new Object [][] {
 
         },
         new String [] {
-            "ID", "First Name", "Last Name", "Middle Name", "Created At"
+            "ID", "Fullname", "Address", "Age", "Birth Date", "Created At"
         }
     );
     TanodsTable.setModel(tableModel);
     fillTanodsTable();
     TanodsTable.setFocusable(false);
-    TanodsTable.addFocusListener(new java.awt.event.FocusAdapter() {
-        public void focusGained(java.awt.event.FocusEvent evt) {
-            TanodsTableFocusGained(evt);
-        }
-    });
     TanodsTable.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             TanodsTableMouseClicked(evt);
@@ -1566,16 +1570,11 @@ public class TanodManagement extends javax.swing.JFrame {
     ArchivesTable.setDefaultEditor(Object.class, null);
     DefaultTableModel archivesTableModel = new DefaultTableModel(
         new Object [][] {},
-        new String [] { "ID", "First Name", "Last Name", "Middle Name", "Created At"}
+        new String [] { "ID", "Fullname", "Address", "Age", "Birth Date", "Created At"}
     );
     ArchivesTable.setModel(archivesTableModel);
     fillTanodsTable();
     ArchivesTable.setFocusable(false);
-    ArchivesTable.addFocusListener(new java.awt.event.FocusAdapter() {
-        public void focusGained(java.awt.event.FocusEvent evt) {
-            ArchivesTableFocusGained(evt);
-        }
-    });
     ArchivesTable.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             ArchivesTableMouseClicked(evt);
@@ -1605,7 +1604,7 @@ public class TanodManagement extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
             .addContainerGap())
     );
 
@@ -1619,11 +1618,6 @@ public class TanodManagement extends javax.swing.JFrame {
     TanodSearchField2.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             TanodSearchField2ActionPerformed(evt);
-        }
-    });
-    TanodSearchField2.addKeyListener(new java.awt.event.KeyAdapter() {
-        public void keyPressed(java.awt.event.KeyEvent evt) {
-            TanodSearchField2KeyPressed(evt);
         }
     });
 
@@ -1656,13 +1650,11 @@ public class TanodManagement extends javax.swing.JFrame {
     jLabel4.setFocusable(false);
     jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
-    SMTanod_id.setText("ID:");
+    SMFull_name.setText("Fullname:");
 
-    SMFirst_name.setText("First Name:");
+    SMAddress.setText("Address:");
 
-    SMLast_name.setText("Last Name:");
-
-    SMMiddle_name.setText("Middle Name:");
+    SMAge.setText("Age:");
 
     SMCreated_at.setText("Created At: ");
 
@@ -1718,6 +1710,8 @@ public class TanodManagement extends javax.swing.JFrame {
         }
     });
 
+    SMBirth_date.setText("Birth Date:");
+
     javax.swing.GroupLayout ShiftsManagementContentLayout = new javax.swing.GroupLayout(ShiftsManagementContent);
     ShiftsManagementContent.setLayout(ShiftsManagementContentLayout);
     ShiftsManagementContentLayout.setHorizontalGroup(
@@ -1738,13 +1732,13 @@ public class TanodManagement extends javax.swing.JFrame {
                         .addGroup(ShiftsManagementContentLayout.createSequentialGroup()
                             .addGap(6, 6, 6)
                             .addGroup(ShiftsManagementContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(SMFirst_name)
                                 .addComponent(UpdateTanod)
-                                .addComponent(SMTanod_id)
-                                .addComponent(SMLast_name)
-                                .addComponent(SMMiddle_name)
-                                .addComponent(SMCreated_at))))
-                    .addGap(537, 890, Short.MAX_VALUE))))
+                                .addComponent(SMAddress)
+                                .addComponent(SMAge)
+                                .addComponent(SMCreated_at)
+                                .addComponent(SMFull_name)
+                                .addComponent(SMBirth_date))))
+                    .addGap(537, 759, Short.MAX_VALUE))))
     );
     ShiftsManagementContentLayout.setVerticalGroup(
         ShiftsManagementContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1752,13 +1746,13 @@ public class TanodManagement extends javax.swing.JFrame {
             .addContainerGap()
             .addComponent(jLabel4)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(SMTanod_id)
+            .addComponent(SMFull_name)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(SMFirst_name)
+            .addComponent(SMAddress)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(SMLast_name)
+            .addComponent(SMAge)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(SMMiddle_name)
+            .addComponent(SMBirth_date)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(SMCreated_at)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1770,7 +1764,7 @@ public class TanodManagement extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(AddShift)
                     .addGap(0, 0, Short.MAX_VALUE))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE))
             .addContainerGap())
     );
 
@@ -1800,12 +1794,6 @@ public class TanodManagement extends javax.swing.JFrame {
     Payroll.setBackground(ClockInClockOut.getBackground());
 
     jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-
-    SearchTanodField.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            SearchTanodFieldActionPerformed(evt);
-        }
-    });
 
     jLabel10.setText("Tanod ID");
 
@@ -1908,7 +1896,7 @@ public class TanodManagement extends javax.swing.JFrame {
         .addGroup(jPanel2Layout.createSequentialGroup()
             .addContainerGap()
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
                 .addComponent(jSeparator6)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2129,7 +2117,7 @@ public class TanodManagement extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(PayrollLayout.createSequentialGroup()
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 313, Short.MAX_VALUE)))
+                    .addGap(0, 197, Short.MAX_VALUE)))
             .addContainerGap())
     );
 
@@ -2204,14 +2192,14 @@ public class TanodManagement extends javax.swing.JFrame {
         .addGroup(SystemLayout.createSequentialGroup()
             .addContainerGap()
             .addComponent(UpdateAdminCredentials, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(636, Short.MAX_VALUE))
+            .addContainerGap(505, Short.MAX_VALUE))
     );
     SystemLayout.setVerticalGroup(
         SystemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(SystemLayout.createSequentialGroup()
             .addContainerGap()
             .addComponent(UpdateAdminCredentials, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(409, Short.MAX_VALUE))
+            .addContainerGap(293, Short.MAX_VALUE))
     );
 
     CardLayout.add(System, "SystemCard");
@@ -2220,15 +2208,15 @@ public class TanodManagement extends javax.swing.JFrame {
     Main.setLayout(MainLayout);
     MainLayout.setHorizontalGroup(
         MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 1011, Short.MAX_VALUE)
+        .addGap(0, 880, Short.MAX_VALUE)
         .addGroup(MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(CardLayout, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE))
+            .addComponent(CardLayout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     MainLayout.setVerticalGroup(
         MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 640, Short.MAX_VALUE)
+        .addGap(0, 524, Short.MAX_VALUE)
         .addGroup(MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(CardLayout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE))
+            .addComponent(CardLayout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     SidePanel.setBackground(new java.awt.Color(32, 40, 57));
@@ -2281,16 +2269,16 @@ public class TanodManagement extends javax.swing.JFrame {
     });
     jPanel11.add(DashboardBtn);
 
-    ClockInClockOutBtn.setBackground(DashboardBtn.getBackground());
-    ClockInClockOutBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-    ClockInClockOutBtn.setForeground(DashboardBtn.getForeground());
     ClockInClockOutBtn.setIcon(IconFontSwing.buildIcon(
         FontAwesome.CLOCK_O,
         14,
         java.awt.Color.WHITE
     ));
     ClockInClockOutBtn.setText("Clock In/Out");
+    ClockInClockOutBtn.setBackground(DashboardBtn.getBackground());
     ClockInClockOutBtn.setBorder(DashboardBtn.getBorder());
+    ClockInClockOutBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    ClockInClockOutBtn.setForeground(DashboardBtn.getForeground());
     ClockInClockOutBtn.setHorizontalAlignment(DashboardBtn.getHorizontalAlignment());
     ClockInClockOutBtn.setHorizontalTextPosition(DashboardBtn.getHorizontalTextPosition());
     ClockInClockOutBtn.setIconTextGap(DashboardBtn.getIconTextGap());
@@ -2448,7 +2436,7 @@ public class TanodManagement extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         appState.remove("editingTanodId");
-        tanod_first_name.setText(""); tanod_last_name.setText(""); tanod_middle_name.setText("");
+        tanod_fullname.setText(""); tanod_address.setText(""); tanod_age.setText("Age: ");
         ArchiveTanod.setVisible(false);
         TanodForm.setTitle("New Tanod");
         TanodForm.setVisible(true);
@@ -2460,17 +2448,17 @@ public class TanodManagement extends javax.swing.JFrame {
             session.beginTransaction();
             Tanod tanod = appState.get("editingTanodId") != null ? session.get(Tanod.class, appState.get("editingTanodId")) : new Tanod();
 
-            tanod.setFirstname(tanod_first_name.getText());
-            tanod.setLastname(tanod_last_name.getText());
-            tanod.setMiddlename(tanod_middle_name.getText());
+            tanod.setFullname(tanod_fullname.getText());
+            tanod.setAddress(tanod_address.getText());
+            tanod.setBirthDate(Date.from(tanod_birth_date.getDate().atStartOfDay().toInstant(ZoneOffset.UTC)));
                 
             if(appState.get("editingTanodId") != null){
                 session.persist(tanod);
                 
                 // Reset Shift Management Tanod View
-                SMFirst_name.setText("First Name: " + tanod.getFirstname());
-                SMLast_name.setText("Last Name: " + tanod.getLastname());
-                SMMiddle_name.setText("Middle Name: " + tanod.getMiddlename());
+                SMFull_name.setText("Fullname: " + tanod.getFullname());
+                SMAddress.setText("Address: " + tanod.getAddress());
+                SMAge.setText("Age: " + tanod.getAge());
             }
             else{
                 session.merge(tanod);
@@ -2494,10 +2482,6 @@ public class TanodManagement extends javax.swing.JFrame {
         TanodForm.setVisible(false);
     }//GEN-LAST:event_SaveTanodActionPerformed
 
-    private void tanod_middle_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tanod_middle_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tanod_middle_nameActionPerformed
-
     private void ArchiveTanodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchiveTanodActionPerformed
         // TODO add your handling code here:
         try(Session session = sessionFactory.openSession()){
@@ -2510,10 +2494,10 @@ public class TanodManagement extends javax.swing.JFrame {
         }
         
         // Reset all dependent components
-        SMTanod_id.setText("ID: ");
-        SMFirst_name.setText("First Name: ");
-        SMLast_name.setText("Last Name: ");
-        SMMiddle_name.setText("Middle Name: ");
+        SMFull_name.setText("Fullname: ");
+        SMAddress.setText("Address: ");
+        SMAge.setText("Age: ");
+        SMBirth_date.setText("Birth Date: ");
         SMCreated_at.setText("Created At: ");
         
         UpdateTanod.setEnabled(false);
@@ -2534,7 +2518,7 @@ public class TanodManagement extends javax.swing.JFrame {
             fillTanodsTable();
         }
         
-        tanod_first_name.setText(""); tanod_last_name.setText(""); tanod_middle_name.setText("");
+        tanod_fullname.setText(""); tanod_address.setText("");
         TanodForm.setVisible(false);
     }//GEN-LAST:event_ArchiveTanodActionPerformed
 
@@ -2651,21 +2635,13 @@ public class TanodManagement extends javax.swing.JFrame {
 
         appState.put("editingTanodId", TanodsTable.getValueAt(row, 0));
 
-        tanod_first_name.setText((String) TanodsTable.getValueAt(row, 1));
-        tanod_last_name.setText((String) TanodsTable.getValueAt(row, 2));
-        tanod_middle_name.setText((String) TanodsTable.getValueAt(row, 3));
+        tanod_fullname.setText((String) TanodsTable.getValueAt(row, 1));
+        tanod_birth_date.setText((String) TanodsTable.getValueAt(row, 4));
+        tanod_address.setText((String) TanodsTable.getValueAt(row, 2));
         TanodForm.setTitle("Update Tanod");
         TanodForm.setVisible(true);
         ArchiveTanod.setVisible(true);
     }//GEN-LAST:event_TanodsTableMouseClicked
-
-    private void TanodsTableFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TanodsTableFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TanodsTableFocusGained
-
-    private void TanodSearchField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanodSearchField2KeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TanodSearchField2KeyPressed
 
     private void TanodSearchField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TanodSearchField2ActionPerformed
         // TODO add your handling code here:
@@ -2675,10 +2651,10 @@ public class TanodManagement extends javax.swing.JFrame {
             Tanod tanod = session.find(Tanod.class, id);
 
             if(tanod != null){
-                SMTanod_id.setText("ID: " + tanod.getId());
-                SMFirst_name.setText("First Name: " + tanod.getFirstname());
-                SMLast_name.setText("Last Name: " + tanod.getLastname());
-                SMMiddle_name.setText("Middle Name: " + tanod.getMiddlename());
+                SMFull_name.setText("Fullname: " + tanod.getFullname());
+                SMAddress.setText("Address: " + tanod.getAddress());
+                SMAge.setText("Age: " + tanod.getAge());
+                SMBirth_date.setText("Birth Date: " + tanod.getSimpleBirthDate());
                 SMCreated_at.setText("Created At: " + tanod.getCreatedAt());
                 
                 if(tanod.is_archived()){
@@ -2694,10 +2670,10 @@ public class TanodManagement extends javax.swing.JFrame {
 
 
                 // Fill TanodForm
-                tanod_first_name.setText(tanod.getFirstname());
-                tanod_last_name.setText(tanod.getLastname());
-                tanod_middle_name.setText(tanod.getMiddlename());
+                tanod_fullname.setText(tanod.getFullname());
+                tanod_address.setText(tanod.getAddress());
                 TanodForm.setTitle("Update Tanod");
+                tanod_birth_date.setDate(TimeHelpers.DateToLocalDate(tanod.getBirthDate()));
                 ArchiveTanod.setVisible(false);
                 appState.put("editingTanodId", tanod.getId());
 
@@ -2787,10 +2763,6 @@ public class TanodManagement extends javax.swing.JFrame {
         fillShiftsAttendancingTable();
     }//GEN-LAST:event_ClockOutActionPerformed
 
-    private void calendarPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_calendarPanel1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_calendarPanel1MouseClicked
-
     private void calendarPanel1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarPanel1PropertyChange
         // TODO add your handling code here:
         if(calendarPanel1.getSelectedDate() != null){
@@ -2872,6 +2844,16 @@ public class TanodManagement extends javax.swing.JFrame {
         DeductionLabel.setText("Php " + String.format("%.2f", payroll.getDeduction()));
         NetLabel.setText("Php " + String.format("%.2f", payroll.getNetSalary()));
     }
+    
+    private void resetSalarySlip(){
+        TanodIdLabel.setText("");
+        TanodFullName.setText("");
+        PayrollPeriodLabel.setText("");
+        IssuedOnLabel.setText("");
+        GrossLabel.setText("");
+        DeductionLabel.setText("");
+        NetLabel.setText("");
+    }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -2881,19 +2863,17 @@ public class TanodManagement extends javax.swing.JFrame {
 
             Tanod tanod = session.find(Tanod.class, (Long) Long.parseLong(SearchTanodField.getText()));
 
-            if(tanod != null){
+            if(tanod != null && !tanod.is_archived()){
                 Payroll payroll = new Payroll(payrollStart.getDate(), payrollEnd.getDate(), tanod);
                 payroll.preview(session);
                 fillSalarySlip(payroll);
+            }else{
+                resetSalarySlip();
             }
             session.getTransaction().commit();
             session.close();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void SearchTanodFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchTanodFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SearchTanodFieldActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -2973,10 +2953,6 @@ public class TanodManagement extends javax.swing.JFrame {
         ((java.awt.CardLayout) CardLayout.getLayout()).show(CardLayout, "SystemCard");
     }//GEN-LAST:event_jButton9ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         String username = userText.getText();
         String password = new String(passwordText.getPassword());
@@ -3026,19 +3002,16 @@ public class TanodManagement extends javax.swing.JFrame {
         jPanel6.setVisible(true);
     }//GEN-LAST:event_SystemBtn1ActionPerformed
 
-    private void ArchivesTableFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ArchivesTableFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ArchivesTableFocusGained
-
     private void ArchivesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ArchivesTableMouseClicked
         // TODO add your handling code here:
         int row = ArchivesTable.getSelectedRow();
 
         appState.put("editingTanodId", ArchivesTable.getValueAt(row, 0));
 
-        jLabel39.setText((String) ArchivesTable.getValueAt(row, 1));
-        jLabel40.setText((String) ArchivesTable.getValueAt(row, 2));
-        jLabel41.setText((String) ArchivesTable.getValueAt(row, 3));
+        restore_dialog_fullname.setText("Fullname: " + (String) ArchivesTable.getValueAt(row, 1));
+        restore_dialog_address.setText("Address: " + (String) ArchivesTable.getValueAt(row, 2));
+        restore_dialog_age.setText("Age: " + (int) ArchivesTable.getValueAt(row, 3));
+        restore_dialog_birth_date.setText("Birth Date: " + (String) ArchivesTable.getValueAt(row, 4));
         RestorationDialog.setTitle("Restore/Delete Tanod");
         RestorationDialog.setVisible(true);
         ArchiveTanod.setVisible(true);
@@ -3055,10 +3028,10 @@ public class TanodManagement extends javax.swing.JFrame {
         }
         
         // Reset all dependent components
-        SMTanod_id.setText("ID: ");
-        SMFirst_name.setText("First Name: ");
-        SMLast_name.setText("Last Name: ");
-        SMMiddle_name.setText("Middle Name: ");
+        SMFull_name.setText("Fullname: ");
+        SMAddress.setText("Address: ");
+        SMAge.setText("Age: ");
+        SMBirth_date.setText("Birth Date: ");
         SMCreated_at.setText("Created At: ");
         
         UpdateTanod.setEnabled(false);
@@ -3078,18 +3051,9 @@ public class TanodManagement extends javax.swing.JFrame {
         else{
             fillTanodsTable();
         }
-        
-        jLabel39.setText(""); jLabel40.setText(""); jLabel41.setText("");
+
         RestorationDialog.setVisible(false);
     }//GEN-LAST:event_DeleteTanodActionPerformed
-
-    private void tanod_last_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tanod_last_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tanod_last_nameActionPerformed
-
-    private void tanod_first_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tanod_first_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tanod_first_nameActionPerformed
 
     private void RestoreTanodBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RestoreTanodBtnActionPerformed
         // TODO add your handling code here:
@@ -3103,10 +3067,10 @@ public class TanodManagement extends javax.swing.JFrame {
         }
         
         // Reset all dependent components
-        SMTanod_id.setText("ID: ");
-        SMFirst_name.setText("First Name: ");
-        SMLast_name.setText("Last Name: ");
-        SMMiddle_name.setText("Middle Name: ");
+        SMFull_name.setText("Fullname: ");
+        SMAddress.setText("Address: ");
+        SMAge.setText("Age: ");
+        SMBirth_date.setText("Birth Date: ");
         SMCreated_at.setText("Created At: ");
         
         UpdateTanod.setEnabled(false);
@@ -3126,10 +3090,15 @@ public class TanodManagement extends javax.swing.JFrame {
         else{
             fillTanodsTable();
         }
-        
-        jLabel39.setText(""); jLabel40.setText(""); jLabel41.setText("");
+
         RestorationDialog.setVisible(false);
     }//GEN-LAST:event_RestoreTanodBtnActionPerformed
+
+    private void tanod_birth_datePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tanod_birth_datePropertyChange
+        // TODO add your handling code here:
+        Tanod dummy_tanod = new Tanod("", "", Date.from(tanod_birth_date.getDate().atStartOfDay().toInstant(ZoneOffset.UTC)));
+        tanod_age.setText("Age: " + dummy_tanod.getAge());
+    }//GEN-LAST:event_tanod_birth_datePropertyChange
 
     /**
      * @param args the command line arguments
@@ -3194,11 +3163,11 @@ public class TanodManagement extends javax.swing.JFrame {
     private javax.swing.JFrame RestorationDialog;
     private javax.swing.JButton RestoreTanodBtn;
     private javax.swing.JPanel RestoreTanodDialog;
+    private javax.swing.JLabel SMAddress;
+    private javax.swing.JLabel SMAge;
+    private javax.swing.JLabel SMBirth_date;
     private javax.swing.JLabel SMCreated_at;
-    private javax.swing.JLabel SMFirst_name;
-    private javax.swing.JLabel SMLast_name;
-    private javax.swing.JLabel SMMiddle_name;
-    private javax.swing.JLabel SMTanod_id;
+    private javax.swing.JLabel SMFull_name;
     private javax.swing.JButton SaveShift;
     private javax.swing.JButton SaveTanod;
     private javax.swing.JTextField SearchTanodField;
@@ -3290,10 +3259,7 @@ public class TanodManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -3333,15 +3299,17 @@ public class TanodManagement extends javax.swing.JFrame {
     private javax.swing.JPasswordField passwordText;
     private com.github.lgooddatepicker.components.DatePicker payrollEnd;
     private com.github.lgooddatepicker.components.DatePicker payrollStart;
-    private javax.swing.JTextField tanod_first_name;
+    private javax.swing.JLabel restore_dialog_address;
+    private javax.swing.JLabel restore_dialog_age;
+    private javax.swing.JLabel restore_dialog_birth_date;
+    private javax.swing.JLabel restore_dialog_fullname;
+    private javax.swing.JTextField tanod_address;
+    private javax.swing.JLabel tanod_address_label;
+    private javax.swing.JLabel tanod_age;
+    private com.github.lgooddatepicker.components.DatePicker tanod_birth_date;
+    private javax.swing.JLabel tanod_birth_date_label;
     private javax.swing.JLabel tanod_first_name_label;
-    private javax.swing.JLabel tanod_first_name_label1;
-    private javax.swing.JTextField tanod_last_name;
-    private javax.swing.JLabel tanod_last_name_label;
-    private javax.swing.JLabel tanod_last_name_label1;
-    private javax.swing.JTextField tanod_middle_name;
-    private javax.swing.JLabel tanod_middle_name_label;
-    private javax.swing.JLabel tanod_middle_name_label1;
+    private javax.swing.JTextField tanod_fullname;
     private javax.swing.JTextField userText;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
