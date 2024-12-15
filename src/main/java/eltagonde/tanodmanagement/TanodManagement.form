@@ -704,21 +704,21 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="RestoreTanodBtn">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="IconFontSwing.buildIcon(&#xa;    FontAwesome.HISTORY,&#xa;    15,&#xa;    java.awt.Color.WHITE&#xa;)" type="code"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Restore"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="d6" green="9f" id="Actions.Blue" palette="3" red="38" type="palette"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection component="ClockIn" name="border" type="property"/>
                 </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="12" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="IconFontSwing.buildIcon(&#xa;    FontAwesome.HISTORY,&#xa;    15,&#xa;    java.awt.Color.WHITE&#xa;)" type="code"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Restore"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection component="ClockIn" name="border" type="property"/>
                 </Property>
               </Properties>
               <Events>
@@ -727,21 +727,21 @@
             </Component>
             <Component class="javax.swing.JButton" name="DeleteTanod">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="IconFontSwing.buildIcon(&#xa;    FontAwesome.TRASH,&#xa;    15,&#xa;    java.awt.Color.WHITE&#xa;)" type="code"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Delete"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="bc" green="b8" id="Component.error.borderColor" palette="3" red="eb" type="palette"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection component="ClockIn" name="border" type="property"/>
                 </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="12" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="IconFontSwing.buildIcon(&#xa;    FontAwesome.TRASH,&#xa;    15,&#xa;    java.awt.Color.WHITE&#xa;)" type="code"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Delete"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection component="ClockIn" name="border" type="property"/>
                 </Property>
               </Properties>
               <Events>
@@ -1452,6 +1452,7 @@
                                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                       <Border info="null"/>
                                     </Property>
+                                    <Property name="enabled" type="boolean" value="false"/>
                                     <Property name="opaque" type="boolean" value="false"/>
                                   </Properties>
                                   <AuxValues>
@@ -1462,8 +1463,8 @@
                                   <SubComponents>
                                     <Component class="javax.swing.JTextArea" name="jTextArea1">
                                       <Properties>
-                                        <Property name="editable" type="boolean" value="false"/>
                                         <Property name="columns" type="int" value="20"/>
+                                        <Property name="editable" type="boolean" value="false"/>
                                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                           <Font name="Segoe UI" size="14" style="0"/>
                                         </Property>

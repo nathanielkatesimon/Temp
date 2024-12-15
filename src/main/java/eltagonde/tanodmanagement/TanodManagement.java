@@ -1127,10 +1127,11 @@ public class TanodManagement extends javax.swing.JFrame {
     jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jScrollPane5.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     jScrollPane5.setBorder(null);
+    jScrollPane5.setEnabled(false);
     jScrollPane5.setOpaque(false);
 
-    jTextArea1.setEditable(false);
     jTextArea1.setColumns(20);
+    jTextArea1.setEditable(false);
     jTextArea1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
     jTextArea1.setLineWrap(true);
     jTextArea1.setRows(5);
@@ -1453,7 +1454,7 @@ public class TanodManagement extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(ClockOut))
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
             .addContainerGap())
     );
     ClockInClockOutLayout.setVerticalGroup(
