@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Nathaniel Kate Simon
+ * @author Angel Marie Eltagonde
  */
 
 public class TransparentWhitePanel extends JPanel {
